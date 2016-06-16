@@ -1,0 +1,29 @@
+<html>
+<head>
+    <title>user settings</title>
+    <link href='https://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+    <h2>user settings</h2>
+    <div class="topright">
+        <a href = "/main">tiny.blog</a><br>
+        [<a href = "/main/user/action/view/userId/<?= $this->authorizerObject->getUserId() ?>">back</a>]
+    </div>
+    <br>
+
+    <form method="post" action="" class="centered">
+        <div class="left rightalign">
+            <p>old password:</p>
+            <p>new password:</p>
+            <p>retype new password:</p>
+        </div>
+        <div class="right leftalign">
+            <p><input type="password" name="oldPassword"></p>
+            <p><input type="password" name="passwordUpdate"></p>
+            <p><input type="password" name="passwordUpdateRetype"></p>
+            <p><input type="submit" value="submit">
+        </div>
+    </form>
+</body>
+</html>

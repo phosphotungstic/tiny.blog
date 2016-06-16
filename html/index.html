@@ -1,0 +1,49 @@
+<html>
+<head>
+    <title>front page</title>
+    <link href='https://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+    <h1><a href = "/main">tiny.blog</a></h1>
+
+    <div class="topright">
+        <? if(!$this->authorizerObject->isLoggedIn()){ ?>
+            [<a href = "/main/login">login</a>]<br><br>
+        <? } else { ?>
+            [<a href = "/main/user/action/view/userId/<?= $this->authorizerObject->getUserId() ?>">user</a>]<br>
+            [<a href = "/main/user/action/logout">logout</a>]<br>
+            logged in as <?= $this->authorizerObject->getUsername() ?>
+        <? } ?>
+    </div>
+
+    <div class="left posts">
+        <hr>
+        <? foreach($recentPostsArray as $post){ ?>
+            <p class="smallP">Post #: <a href="/main/post/action/view/postId/<?= $post->postId ?>" class="grey"><?= $post->postId ?></a> by <a href="/main/user/action/view/userId/<?= $post->posterId ?>" class="grey"><?= $post->postername ?></a><br>
+            <?= $post->postContent ?><br>
+            <?= $post->numberComments ?> comments</p>
+            <hr>
+        <? } ?>
+    </div>
+
+    <div class="right">
+        <form method="post" action="" class="centered">
+            <div class="left rightalign">
+                <p>search by username:</p>
+                <p>search by post id:</p>
+            </div>
+            <div class="right leftalign">
+                <p><input type="text" name="usernameSearch" class="shortenedTextbox"> <input type="submit" name="usernameSearchSubmit" value="search"></p>
+                <p><input type="text" name="postSearch" class="shortenedTextbox"> <input type="submit" name="postSearchSubmit" value="search"></p>
+            </div>
+        </form>
+    </div>
+
+    <div class="watermark">
+        <p>
+            created by <a href="mailto:patrick.wan@learninga-z.com" class="grey">patrick wan</a> for laz project<br>
+            June 2016
+        </p>
+</body>
+</html>

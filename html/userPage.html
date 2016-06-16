@@ -1,0 +1,43 @@
+<html>
+<head>
+    <title>user page</title>
+    <link href='https://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+    <h1><?= $profileUser->username ?>'s Profile</h1>
+    <div class="topright">
+        <a href = "/main">tiny.blog</a><br>
+        <? if($this->authorizerObject->ownsUserPage()){ ?>
+            [<a href = "/main/user/action/post">post</a>]<br>
+            [<a href = "/main/user/action/settings">settings</a>]<br>
+        <? } ?>
+
+        <? if($this->authorizerObject->isLoggedIn()){ ?>
+            [<a href = "/main/user/action/logout">logout</a>]<br>
+        <? } ?>
+    </div>
+    <br>
+
+    <div class="left">
+        <p>
+            Number of posts: <?= $numberPosts ?><br>
+            Number of comments: <?= $numberComments ?>
+        </p>
+    </div>
+
+    <div class="right posts">
+        <hr>
+        <? foreach($postArray as $post){ ?>
+            <p class="smallP">Post #: <a href="/main/post/action/view/postId/<?= $post->postId ?>" class="grey"><?= $post->postId ?></a>
+            <? if($this->authorizerObject->canDelete($post->postId)){ ?>
+                [<a href="/main/post/action/delete/postId/<?= $post->postId ?>" class="grey">delete</a>]
+            <? } ?>
+            <br>
+            <?= $post->postContent ?><br><br>
+            <?= $post->numberComments ?> comments</p>
+            <hr>
+        <? } ?>
+    </div>
+</body>
+</html>

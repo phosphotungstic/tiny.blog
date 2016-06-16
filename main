@@ -1,0 +1,34 @@
+<?
+    session_start();
+
+    function controllerExists($controllerName){
+        $registeredControllers = array("login", "post", "user", "index");
+        foreach($registeredControllers as $registeredController){
+            if(!strcmp($registeredController, $controllerName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    include("/db/connect.php");
+    $dbConnectObject = new dbconnect;
+
+    include_once("/class/uriParseClass.php");
+    $uriParser = new uriParse;
+
+
+    $controllerName = $uriParser->getAssociativeValue("main");
+    if(!controllerExists($controllerName)){
+        header("Location: /main/index");
+        exit();
+    }
+
+    $finalControllerName = $controllerName . "Controller";
+    include("/controllers/baseController.php");
+    include("/controllers/" . $finalControllerName . ".php");
+    $controller = new $finalControllerName;
+    $controller->action();
+
+
+?>

@@ -1,0 +1,20 @@
+<html>
+<head>
+    <title>post <?= $post->postId ?></title>
+    <link href='https://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+    <h2>post #: <?= $post->postId ?> by <?= $post->postername ?></h2>
+    <div class="topright">
+        <a href = "/main">tiny.blog</a>
+    </div>
+    <br>
+
+    <div class="postPage">
+        <p><?= $post->postContent ?></p><br><br><br>
+        <p>number comments: <?= $post->numberComments ?></p>
+    </div>
+
+</body>
+</html>
