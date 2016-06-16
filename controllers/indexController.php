@@ -1,18 +1,18 @@
 <?
-    include_once("/db/userDbGateway.php");
-    include_once("/db/postDbGateway.php");
-    include_once("/class/authenticatorClass.php");
-    include_once("/class/authorizerClass.php");
+    include_once("/db/UserDbGateway.php");
+    include_once("/db/PostDbGateway.php");
+    include_once("/class/Authenticator.php");
+    include_once("/class/Authorizer.php");
 
-    class indexController extends baseController{
+    class IndexController extends BaseController{
         private $postDbGatewayObject;
         private $userDbGatewayObject;
         private $authenticatorObject;
         private $authorizerObject;
 
         function __construct(){
-            $this->userDbGatewayObject = new userDbGateway;
-            $this->postDbGatewayObject = new postDbGateway;
+            $this->userDbGatewayObject = new UserDbGateway;
+            $this->postDbGatewayObject = new PostDbGateway;
             $this->authenticatorObject = new Authenticator;
             $this->authorizerObject = new Authorizer;
         }

@@ -1,7 +1,7 @@
 <?
-    include_once("/class/uriParseClass.php");
-    include_once("/db/postDbGateway.php");
-    include_once("/class/authSharedDataClass.php");
+    include_once("/class/UriParse.php");
+    include_once("/db/PostDbGateway.php");
+    include_once("/class/AuthSharedData.php");
 
 
 
@@ -11,8 +11,8 @@
         private $authSharedDataObject;
 
         function __construct(){
-            $this->uriParser = new uriParse;
-            $this->postDbGatewayObject = new postDbGateway;
+            $this->uriParser = new UriParse;
+            $this->postDbGatewayObject = new PostDbGateway;
             $this->authSharedDataObject = new AuthSharedData;
         }
 

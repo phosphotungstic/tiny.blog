@@ -1,13 +1,13 @@
 <?
-    include_once("/class/postClass.php");
+    include_once("/class/Post.php");
 
-    class postDbGateway{
+    class PostDbGateway{
 
         public $connection;
 
         function __construct(){
-            include_once("/db/connect.php");
-            $this->connection = dbconnect::getConnection();
+            include_once("/db/Dbconnect.php");
+            $this->connection = Dbconnect::getConnection();
         }
 
         function getPostsFromPostIdArrayWithoutPostername($postIds){
@@ -36,15 +36,15 @@
 
             $GRPRA = $getPostResultArray;
 
-            $newPost = new post($GRPRA["poster_id"], $GRPRA["post_id"], $GRPRA["post_content"], $GRPRA["number_comments"]);
+            $newPost = new Post($GRPRA["poster_id"], $GRPRA["post_id"], $GRPRA["post_content"], $GRPRA["number_comments"]);
 
             return $newPost;
         }
 
         function getPostFromPostId($postId){
             $newPost = $this->getPostFromPostIdWithoutPostername($postId);    
-            include_once("/db/userDbGateway.php");
-            $userDbGatewayObject = new userDbGateway;
+            include_once("/db/UserDbGateway.php");
+            $userDbGatewayObject = new UserDbGateway;
             $newPost->postername = $userDbGatewayObject->getUsernameFromUserId($newPost->posterId);
 
             return $newPost;
@@ -57,7 +57,7 @@
             $recentPostArray = array();
             while($getRecentPostsResultArray = $getRecentPostsResult->fetch_assoc()){
                 $GRPRA = $getRecentPostsResultArray;
-                $newPost = new post($GRPRA["poster_id"], $GRPRA["post_id"], $GRPRA["post_content"], $GRPRA["number_comments"]);
+                $newPost = new Post($GRPRA["poster_id"], $GRPRA["post_id"], $GRPRA["post_content"], $GRPRA["number_comments"]);
                 $newPost->postername = $GRPRA["username"];
 
 

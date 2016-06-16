@@ -1,5 +1,5 @@
 <?
-    class dbconnect{
+    class Dbconnect{
         static private $instance;
         private $connection;
 
@@ -15,7 +15,7 @@
     
         public static function getConnection(){
             if(self::$instance === null){
-                self::$instance = new dbconnect();
+                self::$instance = new Dbconnect();
             }
 
             return self::$instance->connection;

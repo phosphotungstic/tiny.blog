@@ -1,13 +1,13 @@
 <?
-    include_once("/db/userDbGateway.php");
-    include_once("/class/authSharedDataClass.php");
+    include_once("/db/UserDbGateway.php");
+    include_once("/class/AuthSharedData.php");
 
     class Authenticator{
         private $userDbGatewayObject;
         private $authSharedDataObject;
 
         function __construct(){
-            $this->userDbGatewayObject = new userDbGateway;
+            $this->userDbGatewayObject = new UserDbGateway;
             $this->authSharedDataObject = new AuthSharedData;
         }
 

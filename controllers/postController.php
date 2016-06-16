@@ -1,19 +1,17 @@
 <?
-    include_once("/db/userDbGateway.php");
-    include_once("/db/postDbGateway.php");
-    include_once("/class/uriParseClass.php");
-    include_once("/class/authorizerClass.php");
+    include_once("/db/PostDbGateway.php");
+    include_once("/class/UriParse.php");
+    include_once("/class/Authorizer.php");
 
-    class postController extends baseController{
+    class PostController extends BaseController{
         private $userDbGatewayObject;
         private $postDbGatewayObject;
         private $uriParser;
         private $authorizerObject;
 
         function __construct(){
-            $this->userDbGatewayObject = new userDbGateway;
-            $this->postDbGatewayObject = new postDbGateway;
-            $this->uriParser = new uriParse;
+            $this->postDbGatewayObject = new PostDbGateway;
+            $this->uriParser = new UriParse;
             $this->authorizerObject = new Authorizer;
         }
 

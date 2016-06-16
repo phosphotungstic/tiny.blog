@@ -11,11 +11,11 @@
         return false;
     }
 
-    include("/db/connect.php");
-    $dbConnectObject = new dbconnect;
+    include_once("/db/Dbconnect.php");
+    $dbConnectObject = new Dbconnect;
 
-    include_once("/class/uriParseClass.php");
-    $uriParser = new uriParse;
+    include_once("/class/UriParse.php");
+    $uriParser = new UriParse;
 
 
     $controllerName = $uriParser->getAssociativeValue("main");
@@ -24,8 +24,9 @@
         exit();
     }
 
+    $controllerName = ucfirst($controllerName);
     $finalControllerName = $controllerName . "Controller";
-    include("/controllers/baseController.php");
+    include("/controllers/BaseController.php");
     include("/controllers/" . $finalControllerName . ".php");
     $controller = new $finalControllerName;
     $controller->action();

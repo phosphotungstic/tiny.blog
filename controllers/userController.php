@@ -1,20 +1,24 @@
 <?
-    include_once("/db/userDbGateway.php");
-    include_once("/db/postDbGateway.php");
-    include_once("/class/authenticatorClass.php");
-    include_once("/class/authorizerClass.php");
+    include_once("/db/UserDbGateway.php");
+    include_once("/db/PostDbGateway.php");
+    include_once("/class/Authenticator.php");
+    include_once("/class/Authorizer.php");
+    include_once("/class/UriParse.php");
 
-    class userController extends baseController{
+
+    class UserController extends BaseController{
         private $userDbGatewayObject;
         private $postDbGatewayObject;
         private $authenticatorObject;
         private $authorizerObject;
+        private $uriParser;
 
         function __construct(){
-            $this->userDbGatewayObject = new userDbGateway;
-            $this->postDbGatewayObject = new postDbGateway;
+            $this->userDbGatewayObject = new UserDbGateway;
+            $this->postDbGatewayObject = new PostDbGateway;
             $this->authenticatorObject = new Authenticator;
             $this->authorizerObject = new Authorizer;
+            $this->uriParser = new UriParse;
         }
 
 
@@ -31,30 +35,27 @@
         }
 
         function action(){
-            include_once("/class/uriParseClass.php");
-            $uriParser = new uriParse;
-
-            if($uriParser->uriCheckAssociativePair("action", "logout")){
+            if($this->uriParser->uriCheckAssociativePair("action", "logout")){
                 session_unset();
                 $this->redirect("/main");
             }
-            elseif($uriParser->uriCheckAssociativePair("action", "post") && $this->authorizerObject->isLoggedIn()){
+            elseif($this->uriParser->uriCheckAssociativePair("action", "post") && $this->authorizerObject->isLoggedIn()){
                 if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")){
                     $this->postHandler();
                 }
                 include_once("/html/userPost.html");
             }
-            elseif($uriParser->uriCheckAssociativePair("action", "settings") && $this->authorizerObject->isLoggedIn()){
+            elseif($this->uriParser->uriCheckAssociativePair("action", "settings") && $this->authorizerObject->isLoggedIn()){
                 if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")){
                     $this->settingsHandler();
                 }
                 include_once("/html/userSettings.html");
             }
-            elseif($this->userDbGatewayObject->isGreaterThanMaxUserId((int)$uriParser->getAssociativeValue("userId")) || !is_numeric($uriParser->getAssociativeValue("userId"))){
+            elseif($this->userDbGatewayObject->isGreaterThanMaxUserId((int)$this->uriParser->getAssociativeValue("userId")) || !is_numeric($this->uriParser->getAssociativeValue("userId"))){
                 $this->redirect("/html/404.html");
             }
             else{
-                $profileUser = $this->userDbGatewayObject->createUserFromUserId($uriParser->getAssociativeValue("userId"));
+                $profileUser = $this->userDbGatewayObject->createUserFromUserId($this->uriParser->getAssociativeValue("userId"));
                 $this->userDbGatewayObject->addPostsAndCommentsFromUserClass($profileUser);
                 $postArray = $this->postDbGatewayObject->getPostsFromPostIdArrayWithoutPostername($profileUser->postIds);
                 $numberPosts = sizeof($profileUser->postIds);

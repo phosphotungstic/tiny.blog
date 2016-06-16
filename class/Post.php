@@ -1,5 +1,5 @@
 <?
-    class post{
+    class Post{
         public $postername;
         public $posterId;
         public $postId;

@@ -1,18 +1,22 @@
 <?
-    include_once("/db/userDbGateway.php");
-    include_once("/class/authenticatorClass.php");
-    include_once("/class/authorizerClass.php");
+    include_once("/db/UserDbGateway.php");
+    include_once("/class/Authenticator.php");
+    include_once("/class/Authorizer.php");
+    include_once("/class/UriParse.php");
 
 
-    class loginController extends baseController{
+
+    class LoginController extends BaseController{
         private $userDbGatewayObject;
         private $authenticatorObject;
         private $authorizerObject;
+        private $uriParser;
 
         function __construct(){
-            $this->userDbGatewayObject = new userDbGateway;
+            $this->userDbGatewayObject = new UserDbGateway;
             $this->authenticatorObject = new Authenticator;
             $this->authorizerObject = new Authorizer;
+            $this->uriParser = new UriParse;
         }
 
         function loginHandler($username, $password){
@@ -59,23 +63,20 @@
         }
 
         function action(){
-            include_once("/class/uriParseClass.php");
-            $uriParser = new uriParse;
 
-            $possibleUriArray = array("createAccount");
 
             if($this->authorizerObject->isLoggedIn()){
                 $this->redirect("/main");
             }
 
 
-            if(!$uriParser->isKeySet("action")){
+            if(!$this->uriParser->isKeySet("action")){
                 if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")){
                     $this->loginHandler($_POST["username"], $_POST["password"]);
                 }
                 include("/html/loginPage.html");
             }
-            elseif($uriParser->uriCheckAssociativePair("action", "createAccount")){
+            elseif($this->uriParser->uriCheckAssociativePair("action", "createAccount")){
                 if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")){
                     $this->accountCreator();
                 }

@@ -1,14 +1,12 @@
 <?
-    include_once("/class/userClass.php");
-
-
-
-    class userDbGateway{
+    include_once("/class/User.php");
+    
+    class UserDbGateway{
         public $connection;
 
         function __construct(){
-            include_once("/db/connect.php");
-            $this->connection = dbconnect::getConnection();
+            include_once("/db/Dbconnect.php");
+            $this->connection = Dbconnect::getConnection();
         }
 
         function checkUsernamePassword($username, $password){
@@ -23,7 +21,7 @@
         }
 
         function createUserFromUserId($userId){
-            $newUser = new user;
+            $newUser = new User;
             $newUser->userId = $userId;
 
             $usernameFromUserIdQuery = "select username from users where user_id=" . $userId . ";";
@@ -34,9 +32,8 @@
             return $newUser;
         }
 
-
         function createUserFromUsername($username){
-            $newUser = new user;
+            $newUser = new User;
             $newUser->username = $username;
 
             $userIdFromUsernameQuery = "select user_id from users where username='" . $username . "';";

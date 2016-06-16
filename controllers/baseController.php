@@ -1,5 +1,5 @@
 <?
-    abstract class baseController{
+    abstract class BaseController{
         public $controller;
 
         protected function redirect($url){

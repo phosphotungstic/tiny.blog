@@ -1,5 +1,5 @@
 <?
-    class user{
+    class User{
         public $username;
         public $userId;
         public $postIds;

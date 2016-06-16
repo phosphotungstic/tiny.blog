@@ -1,5 +1,5 @@
 <?
-    class uriParse{
+    class UriParse{
         public $uri;
         public $uriComponents;
         public $uriAssociativeArray;
@@ -27,7 +27,6 @@
         public function getAssociativeValue($key){
             return $this->uriAssociativeArray[$key];
         }
-
 
         public function isKeySet($key){
             if(!isset($this->uriAssociativeArray[$key])){
