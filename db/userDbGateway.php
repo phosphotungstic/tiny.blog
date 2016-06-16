@@ -4,15 +4,15 @@
     class UserDbGateway{
         public $connection;
 
-        function __construct(){
+        function __construct() {
             include_once("/db/Dbconnect.php");
             $this->connection = Dbconnect::getConnection();
         }
 
-        function checkUsernamePassword($username, $password){
+        function checkUsernamePassword($username, $password) {
             $usernamePasswordQuery = "select username, password from users where username='" . $username . "' and password='" . $password . "';";
             $usernamePasswordQueryResult = $this->connection->query($usernamePasswordQuery);
-            if($usernamePasswordQueryResult->num_rows == 0){
+            if($usernamePasswordQueryResult->num_rows == 0) {
                 return false;
             }
             else{
@@ -20,7 +20,7 @@
             }
         }
 
-        function createUserFromUserId($userId){
+        function createUserFromUserId($userId) {
             $newUser = new User;
             $newUser->userId = $userId;
 
@@ -32,7 +32,7 @@
             return $newUser;
         }
 
-        function createUserFromUsername($username){
+        function createUserFromUsername($username) {
             $newUser = new User;
             $newUser->username = $username;
 
@@ -44,12 +44,12 @@
             return $newUser;
         }
 
-        function addPostsAndCommentsFromUserClass($user){
+        function addPostsAndCommentsFromUserClass($user) {
             $userPostIdFromUserIdQuery = "select post_id from posts where poster_id=" . $user->userId . ";";
             $userPostIdFromUserIdResult = $this->connection->query($userPostIdFromUserIdQuery);            
             
             $userPostIdArray = array();
-            while($userPostIdFromUserIdResultArray = $userPostIdFromUserIdResult->fetch_assoc()){
+            while($userPostIdFromUserIdResultArray = $userPostIdFromUserIdResult->fetch_assoc()) {
                 array_push($userPostIdArray, $userPostIdFromUserIdResultArray["post_id"]);
             }
             $user->postIds = $userPostIdArray;
@@ -58,13 +58,13 @@
             $userCommentIdFromUserIdResult = $this->connection->query($userCommentIdFromUserIdQuery);            
             
             $userCommentIdArray = array();
-            while($userCommentIdFromUserIdResultArray = $userCommentIdFromUserIdResult->fetch_assoc()){
+            while($userCommentIdFromUserIdResultArray = $userCommentIdFromUserIdResult->fetch_assoc()) {
                 array_push($userCommentIdArray, $userCommentIdFromUserIdResultArray["comment_id"]);
             }
             $user->commentIds = $userCommentIdArray;
         }
 
-        function maxUserId(){
+        function maxUserId() {
             $maxUserIdQuery = "select max(user_id) from users;";
             $maxUserIdResult = $this->connection->query($maxUserIdQuery);
             $maxUserId = $maxUserIdResult->fetch_assoc();
@@ -72,10 +72,10 @@
             return $maxUserId["max(user_id)"];
         }
 
-        function checkUsernameAvailable($username){
+        function checkUsernameAvailable($username) {
             $usernameAvailableQuery = "select * from users where username='" . $username . "';";
             $usernameAvailableResult = $this->connection->query($usernameAvailableQuery);
-            if($usernameAvailableResult->num_rows == 0){
+            if($usernameAvailableResult->num_rows == 0) {
                 return true;
             }
             else{
@@ -84,12 +84,12 @@
         }
 
 
-        function addAccount($username, $password){
+        function addAccount($username, $password) {
             $addAccountQuery = "insert into users VALUES(NULL, '" . $username . "','" . $password . "');";
             $this->connection->query($addAccountQuery);
         }
 
-        function getUserIdFromUsername($username){
+        function getUserIdFromUsername($username) {
             $getUserIdFromUsernameQuery = "select user_id from users where username='" . $username . "';";
             $getUserIdResult = $this->connection->query($getUserIdFromUsernameQuery);
             $getUserId = $getUserIdResult->fetch_assoc();
@@ -97,7 +97,7 @@
             return $getUserId["user_id"];
         }
 
-        function getUsernameFromUserId($userId){
+        function getUsernameFromUserId($userId) {
             $getPosterQuery = "select username from users where user_id=" . $userId . ";";
             $getPosterResult = $this->connection->query($getPosterQuery);
             $getPosterResultArray = $getPosterResult->fetch_assoc();
@@ -105,14 +105,14 @@
             return $getPosterResultArray["username"];
         }
 
-        function updatePassword($userId, $passwordUpdate){
+        function updatePassword($userId, $passwordUpdate) {
             $updatePasswordQuery = "update users set password='" . $passwordUpdate . "' where user_id=" . $userId . ";";
             $this->connection->query($updatePasswordQuery);
         }
 
-        function isGreaterThanMaxUserId($userId){
+        function isGreaterThanMaxUserId($userId) {
             $maxUserId = $this->maxUserId();
-            if($userId > $maxUserId){
+            if($userId > $maxUserId) {
                 return true;
             }
             else{

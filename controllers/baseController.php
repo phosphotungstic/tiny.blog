@@ -2,7 +2,7 @@
     abstract class BaseController{
         public $controller;
 
-        protected function redirect($url){
+        protected function redirect($url) {
             header("Location: $url");
             exit();
         }

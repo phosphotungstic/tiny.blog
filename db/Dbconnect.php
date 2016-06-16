@@ -3,7 +3,7 @@
         static private $instance;
         private $connection;
 
-        function __construct(){
+        function __construct() {
             $servername = "127.0.0.1";
             $port = 3306;
             $username = "root";
@@ -13,8 +13,8 @@
             $this->connection = new mysqli($servername, $username, $password, $database, $port);
         }
     
-        public static function getConnection(){
-            if(self::$instance === null){
+        public static function getConnection() {
+            if(self::$instance === null) {
                 self::$instance = new Dbconnect();
             }
 

@@ -6,7 +6,7 @@
         public $postContent;
         public $numberComments;
 
-        public function __construct($posterId, $postId, $postContent, $numberComments){
+        public function __construct($posterId, $postId, $postContent, $numberComments) {
             $this->posterId = $posterId;
             $this->postId = $postId;
             $this->postContent = $postContent;

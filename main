@@ -1,10 +1,10 @@
 <?
     session_start();
 
-    function controllerExists($controllerName){
+    function controllerExists($controllerName) {
         $registeredControllers = array("login", "post", "user", "index");
-        foreach($registeredControllers as $registeredController){
-            if(!strcmp($registeredController, $controllerName)){
+        foreach($registeredControllers as $registeredController) {
+            if(!strcmp($registeredController, $controllerName)) {
                 return true;
             }
         }
@@ -19,7 +19,7 @@
 
 
     $controllerName = $uriParser->getAssociativeValue("main");
-    if(!controllerExists($controllerName)){
+    if(!controllerExists($controllerName)) {
         header("Location: /main/index");
         exit();
     }

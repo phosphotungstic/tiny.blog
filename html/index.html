@@ -8,7 +8,7 @@
     <h1><a href = "/main">tiny.blog</a></h1>
 
     <div class="topright">
-        <? if(!$this->authorizerObject->isLoggedIn()){ ?>
+        <? if(!$this->authorizerObject->isLoggedIn()) { ?>
             [<a href = "/main/login">login</a>]<br><br>
         <? } else { ?>
             [<a href = "/main/user/action/view/userId/<?= $this->authorizerObject->getUserId() ?>">user</a>]<br>
@@ -19,7 +19,7 @@
 
     <div class="left posts">
         <hr>
-        <? foreach($recentPostsArray as $post){ ?>
+        <? foreach($recentPostsArray as $post) { ?>
             <p class="smallP">Post #: <a href="/main/post/action/view/postId/<?= $post->postId ?>" class="grey"><?= $post->postId ?></a> by <a href="/main/user/action/view/userId/<?= $post->posterId ?>" class="grey"><?= $post->postername ?></a><br>
             <?= $post->postContent ?><br>
             <?= $post->numberComments ?> comments</p>
