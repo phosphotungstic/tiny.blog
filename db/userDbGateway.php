@@ -45,12 +45,12 @@
         }
 
         function addPostsAndCommentsFromUserClass($user) {
-            $userPostIdFromUserIdQuery = "select post_id from posts where poster_id=" . $user->userId . ";";
+            $userPostIdFromUserIdQuery = "select public_post_id from posts where poster_id=" . $user->userId . " and delete_bit = 0;";
             $userPostIdFromUserIdResult = $this->connection->query($userPostIdFromUserIdQuery);            
             
             $userPostIdArray = array();
             while($userPostIdFromUserIdResultArray = $userPostIdFromUserIdResult->fetch_assoc()) {
-                array_push($userPostIdArray, $userPostIdFromUserIdResultArray["post_id"]);
+                array_push($userPostIdArray, $userPostIdFromUserIdResultArray["public_post_id"]);
             }
             $user->postIds = $userPostIdArray;
 

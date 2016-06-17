@@ -21,9 +21,6 @@
         }
 
         function isValidUri() {
-            if($this->postDbGatewayObject->isGreaterThanMaxPostId($this->uriParser->getAssociativeValue("postId"))) {
-                return false;
-            }
             if(!$this->uriParser->isKeySet("postId")) {
                 return false;
             }
@@ -43,7 +40,7 @@
                 $this->redirect("/html/404.html");
             }
             elseif(!$this->isValidPostId()) {
-                include("/html/postDeleted.html");
+                include("/html/postNotExist.html");
             }
             else{
                 if(!strcmp($this->uriParser->getAssociativeValue("action"), "view")) {
