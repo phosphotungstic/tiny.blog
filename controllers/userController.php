@@ -31,7 +31,7 @@
             elseif($this->uriParser->uriCheckAssociativePair("action", "settings") && $this->authorizerObject->isLoggedIn()) {
                 $this->settingsHandler();
             }
-            elseif($this->userDbGatewayObject->isGreaterThanMaxUserId((int)$this->uriParser->getAssociativeValue("userId")) || !is_numeric($this->uriParser->getAssociativeValue("userId"))) {
+            elseif($this->isInvalidUser()) {
                 $this->redirect("/html/404.html");
             }
             else{
@@ -49,7 +49,7 @@
 
         function settingsHandler() {
             if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
-                if($this->authenticatorObject->checkCredentials($this->authorizerObject->getUsername(), $_POST["oldPassword"]) && !strcmp($_POST["passwordUpdate"], $_POST["passwordUpdateRetype"])) {
+                if($this->isValidPasswordChange()) {
                     $this->userDbGatewayObject->updatePassword($this->authorizerObject->getUserId(), $_POST["passwordUpdate"]);
                     $this->redirect("/main/user/action/view/userId/" . $this->authorizerObject->getUserId());
                 }
@@ -57,7 +57,26 @@
             include_once("/html/userSettings.html");
         }
 
-        function displayUserPage(){
+        function isValidPasswordChange() {
+            if($this->authenticatorObject->checkCredentials($this->authorizerObject->getUsername(), $_POST["oldPassword"])) {
+                if(!strcmp($_POST["passwordUpdate"], $_POST["passwordUpdateRetype"])) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function isInvalidUser() {
+            if($this->userDbGatewayObject->isGreaterThanMaxUserId((int)$this->uriParser->getAssociativeValue("userId"))) {
+                return true;
+            }
+            if(!is_numeric($this->uriParser->getAssociativeValue("userId"))) {
+                return true;
+            }
+            return false;
+        }
+
+        function displayUserPage() {
             $displayUserId = $this->uriParser->getAssociativeValue("userId");
             $profileUser = $this->userDbGatewayObject->createUserFromUserId($displayUserId);
             $this->userDbGatewayObject->addPostsAndCommentsFromUserClass($profileUser);

@@ -43,10 +43,9 @@
             }
         }
 
-        function validHandler(){
+        function validHandler() {
             if($this->uriParser->uriCheckAssociativePair("action", "view")) {
-                $post = $this->postDbGatewayObject->getPostFromPostId($this->uriParser->getAssociativeValue("postId"));
-                include("/html/postPage.html");
+                $this->viewAction();
             }
             elseif($this->uriParser->uriCheckAssociativePair("action", "delete")) {
                 $this->deleteAction();
@@ -56,7 +55,12 @@
             }
         }
 
-        function deleteAction(){
+        function viewAction() {
+            $post = $this->postDbGatewayObject->getPostFromPostId($this->uriParser->getAssociativeValue("postId"));
+            include("/html/postPage.html");
+        }
+
+        function deleteAction() {
             if($this->authorizerObject->canDelete($this->uriParser->getAssociativeValue("postId"))) {
                 $this->deletePost($this->uriParser->getAssociativeValue("postId"));
             }

@@ -49,7 +49,7 @@
             $user->commentIds = $this->getCommentsFromUserClass($user);
         }
 
-        function getPostsFromUserClass($user){
+        function getPostsFromUserClass($user) {
             $userPostIdFromUserIdQuery = "select post_id from posts where poster_id=" . $user->userId . " and delete_bit = 0;";
             $userPostIdFromUserIdResult = $this->connection->query($userPostIdFromUserIdQuery);            
             $userPostIdArray = array();
@@ -60,7 +60,7 @@
             return $userPostIdArray;
         }
 
-        function getCommentsFromUserClass($user){
+        function getCommentsFromUserClass($user) {
             $userCommentIdFromUserIdQuery = "select comment_id from comments where commenter_id=" . $user->userId . ";";
             $userCommentIdFromUserIdResult = $this->connection->query($userCommentIdFromUserIdQuery);            
             $userCommentIdArray = array();

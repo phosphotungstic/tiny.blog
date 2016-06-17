@@ -35,14 +35,14 @@
             }
         }
 
-        function defaultLoginHandler(){
+        function defaultLoginHandler() {
             if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
                 $this->loginHandler($_POST["username"], $_POST["password"]);
             }
             include("/html/loginPage.html");
         }
 
-        function createAccountHandler(){
+        function createAccountHandler() {
             if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
                 $this->accountCreator();
             }
@@ -85,7 +85,6 @@
             if(strlen($_POST["username"]) > 20 || strlen($_POST["password"]) > 20) {
                 $validAccount = false;
             }
-
             return $validAccount;
         }
     }
