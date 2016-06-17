@@ -1,8 +1,8 @@
 <?
     class UriParse{
-        public $uri;
-        public $uriComponents;
-        public $uriAssociativeArray;
+        private $uri;
+        private $uriComponents;
+        private $uriAssociativeArray;
 
         function __construct() {
             $this->uri = $_SERVER['REQUEST_URI'];

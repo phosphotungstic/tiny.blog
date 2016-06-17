@@ -3,14 +3,12 @@
     include_once("/db/PostDbGateway.php");
     include_once("/class/AuthSharedData.php");
 
-
-
-    class Authorizer{
+    class Authorizer extends authSharedData{
         private $uriParser;
         private $postDbGatewayObject;
         private $authSharedDataObject;
 
-        function __construct() {
+        public function __construct() {
             $this->uriParser = new UriParse;
             $this->postDbGatewayObject = new PostDbGateway;
             $this->authSharedDataObject = new AuthSharedData;
@@ -24,8 +22,8 @@
             return $this->authSharedDataObject->getUsername();
         }
 
-        function ownsUserPage() {
-            if((int)$this->uriParser->uriAssociativeArray["userId"] == $this->getUserId()) {
+        public function ownsUserPage() {
+            if((int)$this->uriParser->getAssociativeValue("userId") == $this->getUserId()) {
                 return true;
             }
             else{
@@ -33,7 +31,7 @@
             }
         }
 
-        function canDelete($postId) {
+        public function canDelete($postId) {
             if($this->postDbGatewayObject->doesUserOwnPost($this->getUserId(), $postId)) {
                 return true;
             }
@@ -42,7 +40,7 @@
             }
         }
 
-        function isLoggedIn() {
+        public function isLoggedIn() {
             return $this->authSharedDataObject->isloggedIn();
         }
 

@@ -2,7 +2,6 @@
     include_once("/class/Post.php");
 
     class PostDbGateway{
-
         public $connection;
 
         function __construct() {
@@ -71,6 +70,11 @@
             return $this->connection->insert_id;
         }
 
+        function deletePost($postId) {
+            $deletePostQuery = "update posts set delete_bit = 1 where post_id=" . $postId . ";";
+            $this->connection->query($deletePostQuery);
+        }
+
         function maxPostId() {
             $maxPostIdQuery = "select max(post_id) from posts;";
             $maxPostIdResult = $this->connection->query($maxPostIdQuery);
@@ -100,10 +104,5 @@
                 return true;
             }
         }
-
-        function deletePost($postId) {
-            $deletePostQuery = "update posts set delete_bit = 1 where post_id=" . $postId . ";";
-            $this->connection->query($deletePostQuery);
-        }
-
     }
+?>

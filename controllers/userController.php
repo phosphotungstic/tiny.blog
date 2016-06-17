@@ -5,7 +5,6 @@
     include_once("/class/Authorizer.php");
     include_once("/class/UriParse.php");
 
-
     class UserController extends BaseController{
         private $userDbGatewayObject;
         private $postDbGatewayObject;
@@ -19,19 +18,6 @@
             $this->authenticatorObject = new Authenticator;
             $this->authorizerObject = new Authorizer;
             $this->uriParser = new UriParse;
-        }
-
-
-        function postHandler() {
-            $newPostId = $this->postDbGatewayObject->createPost($this->authorizerObject->getUserId(), $_POST["textbox"]);
-            $this->redirect("/main/post/action/view/postId/" . $newPostId);
-        }
-
-        function settingsHandler() {
-            if($this->authenticatorObject->checkCredentials($this->authorizerObject->getUsername(), $_POST["oldPassword"]) && !strcmp($_POST["passwordUpdate"], $_POST["passwordUpdateRetype"])) {
-                $this->userDbGatewayObject->updatePassword($this->authorizerObject->getUserId(), $_POST["passwordUpdate"]);
-                $this->redirect("/main/user/action/view/userId/" . $this->authorizerObject->getUserId());
-            }
         }
 
         function action() {
@@ -55,14 +41,31 @@
                 $this->redirect("/html/404.html");
             }
             else{
-                $profileUser = $this->userDbGatewayObject->createUserFromUserId($this->uriParser->getAssociativeValue("userId"));
-                $this->userDbGatewayObject->addPostsAndCommentsFromUserClass($profileUser);
-                $postArray = $this->postDbGatewayObject->getPostsFromPostIdArrayWithoutPostername($profileUser->postIds);
-                $numberPosts = sizeof($profileUser->postIds);
-                $numberComments = sizeof($profileUser->commentIds);
-
-                include_once("/html/userPage.html");
+                $this->displayUserpage();
             }
+        }
+
+        function postHandler() {
+            $newPostId = $this->postDbGatewayObject->createPost($this->authorizerObject->getUserId(), $_POST["textbox"]);
+            $this->redirect("/main/post/action/view/postId/" . $newPostId);
+        }
+
+        function settingsHandler() {
+            if($this->authenticatorObject->checkCredentials($this->authorizerObject->getUsername(), $_POST["oldPassword"]) && !strcmp($_POST["passwordUpdate"], $_POST["passwordUpdateRetype"])) {
+                $this->userDbGatewayObject->updatePassword($this->authorizerObject->getUserId(), $_POST["passwordUpdate"]);
+                $this->redirect("/main/user/action/view/userId/" . $this->authorizerObject->getUserId());
+            }
+        }
+
+        function displayUserPage(){
+            $displayUserId = $this->uriParser->getAssociativeValue("userId");
+            $profileUser = $this->userDbGatewayObject->createUserFromUserId($displayUserId);
+            $this->userDbGatewayObject->addPostsAndCommentsFromUserClass($profileUser);
+            $postArray = $this->postDbGatewayObject->getPostsFromPostIdArrayWithoutPostername($profileUser->postIds);
+            $numberPosts = sizeof($profileUser->postIds);
+            $numberComments = sizeof($profileUser->commentIds);
+
+            include_once("/html/userPage.html");
         }
     }
 ?>

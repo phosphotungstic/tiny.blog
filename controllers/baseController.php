@@ -6,7 +6,7 @@
             header("Location: $url");
             exit();
         }
-
+        
         abstract protected function action();
     }
 

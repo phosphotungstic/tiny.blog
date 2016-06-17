@@ -17,16 +17,6 @@
             $this->authorizerObject = new Authorizer;
         }
 
-        function searchHandler() {
-            if(isset($_POST["usernameSearchSubmit"])) {
-                $foundUserId = $this->userDbGatewayObject->getUserIdFromUsername($_POST["usernameSearch"]);
-                $this->redirect("/main/user/action/view/userId/" . $foundUserId);
-            }
-            if(isset($_POST["postSearchSubmit"])) {
-                $this->redirect("/main/post/action/view/postId/" . $_POST["postSearch"]);
-            }
-        }
-
         function action() {
             if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
                 $this->searchHandler();
@@ -36,6 +26,15 @@
                 include("/html/index.html");
             }
         }
-    }
 
+        function searchHandler() {
+            if(isset($_POST["usernameSearchSubmit"])) {
+                $foundUserId = $this->userDbGatewayObject->getUserIdFromUsername($_POST["usernameSearch"]);
+                $this->redirect("/main/user/action/view/userId/" . $foundUserId);
+            }
+            if(isset($_POST["postSearchSubmit"])) {
+                $this->redirect("/main/post/action/view/postId/" . $_POST["postSearch"]);
+            }
+        }
+    }
 ?>

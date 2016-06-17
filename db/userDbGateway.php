@@ -46,7 +46,7 @@
 
         function addPostsAndCommentsFromUserClass($user) {
             $user->postIds = $this->getPostsFromUserClass($user);
-            $user->commentIds = $this->getPostsFromUserClass($user);
+            $user->commentIds = $this->getCommentsFromUserClass($user);
         }
 
         function getPostsFromUserClass($user){

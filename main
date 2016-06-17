@@ -16,8 +16,7 @@
 
     include_once("/class/UriParse.php");
     $uriParser = new UriParse;
-
-
+    
     $controllerName = $uriParser->getAssociativeValue("main");
     if(!controllerExists($controllerName)) {
         header("Location: /main/index");
@@ -30,6 +29,4 @@
     include("/controllers/" . $finalControllerName . ".php");
     $controller = new $finalControllerName;
     $controller->action();
-
-
 ?>
