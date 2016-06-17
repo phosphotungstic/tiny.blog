@@ -7,7 +7,10 @@
 <body>
     <h2>post #: <?= $post->postId ?> by <?= $post->postername ?></h2>
     <div class="topright">
-        <a href = "/main">tiny.blog</a>
+        <a href = "/main">tiny.blog</a><br>
+        <? if($this->authorizerObject->isLoggedIn()){ ?>
+            [<a href = "/main/user/action/view/userId/<?= $this->authorizerObject->getUserId(); ?>">profile</a>]
+        <? } ?>
     </div>
     <br>
 

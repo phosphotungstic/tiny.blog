@@ -51,6 +51,9 @@
                     if($this->authorizerObject->canDelete($this->uriParser->getAssociativeValue("postId"))) {
                         $this->deletePost($this->uriParser->getAssociativeValue("postId"));
                     }
+                    else{
+                        $this->redirect("/html/404.html");
+                    }
                 }
                 else{
                     $this->redirect("/html/404.html");
