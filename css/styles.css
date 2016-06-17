@@ -31,11 +31,6 @@ a.grey{
     width: 45%;
 }
 
-.posts{
-    overflow: auto;
-    height: 75%;
-}
-
 .right{
     margin-top: 6%;
     margin-right: 3%;
@@ -43,30 +38,26 @@ a.grey{
     width: 45%;
 }
 
+.posts{
+    overflow: auto;
+    height: 75%;
+}
+
 .search{
     text-align: center;
 }
 
-.by{
+.watermark{
     position: fixed;
     bottom: 0;
-    width: 100%;
-    text-align: center;
+    left: 5px;
+    font-size: 10px;
 }
 
 .centered{
     margin-top: 15%;
     width: 100%;
     text-align: center;
-}
-
-.centertext{
-    text-align: center;
-}
-
-.profiledivmargin{
-    margin-left: 10%;
-    margin-right: 10%;
 }
 
 .textpost{
@@ -101,13 +92,6 @@ a.grey{
 
 .shortenedTextbox{
     width: 30%;
-}
-
-.watermark{
-    position: fixed;
-    bottom: 0;
-    left: 5px;
-    font-size: 10px;
 }
 
 .postPage{
