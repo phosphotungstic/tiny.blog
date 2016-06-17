@@ -33,9 +33,7 @@
             $getPostQuery = "select * from posts where post_id=" . $postId . " and delete_bit = 0;";
             $getPostResult = $this->connection->query($getPostQuery);
             $getPostResultArray = $getPostResult->fetch_assoc();
-
             $GRPRA = $getPostResultArray;
-
             $newPost = new Post($GRPRA["poster_id"], $GRPRA["post_id"], $GRPRA["post_content"], $GRPRA["number_comments"]);
 
             return $newPost;
@@ -59,8 +57,6 @@
                 $GRPRA = $getRecentPostsResultArray;
                 $newPost = new Post($GRPRA["poster_id"], $GRPRA["post_id"], $GRPRA["post_content"], $GRPRA["number_comments"]);
                 $newPost->postername = $GRPRA["username"];
-
-
                 array_push($recentPostArray, $newPost);
             }
 

@@ -63,12 +63,9 @@
         }
 
         function action() {
-
-
             if($this->authorizerObject->isLoggedIn()) {
                 $this->redirect("/main");
             }
-
 
             if(!$this->uriParser->isKeySet("action")) {
                 if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
