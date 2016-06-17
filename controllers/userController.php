@@ -26,16 +26,10 @@
                 $this->redirect("/main");
             }
             elseif($this->uriParser->uriCheckAssociativePair("action", "post") && $this->authorizerObject->isLoggedIn()) {
-                if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
-                    $this->postHandler();
-                }
-                include_once("/html/userPost.html");
+                $this->postHandler();
             }
             elseif($this->uriParser->uriCheckAssociativePair("action", "settings") && $this->authorizerObject->isLoggedIn()) {
-                if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
-                    $this->settingsHandler();
-                }
-                include_once("/html/userSettings.html");
+                $this->settingsHandler();
             }
             elseif($this->userDbGatewayObject->isGreaterThanMaxUserId((int)$this->uriParser->getAssociativeValue("userId")) || !is_numeric($this->uriParser->getAssociativeValue("userId"))) {
                 $this->redirect("/html/404.html");
@@ -46,15 +40,21 @@
         }
 
         function postHandler() {
-            $newPostId = $this->postDbGatewayObject->createPost($this->authorizerObject->getUserId(), $_POST["textbox"]);
-            $this->redirect("/main/post/action/view/postId/" . $newPostId);
+            if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
+                $newPostId = $this->postDbGatewayObject->createPost($this->authorizerObject->getUserId(), $_POST["textbox"]);
+                $this->redirect("/main/post/action/view/postId/" . $newPostId);
+            }
+            include_once("/html/userPost.html");
         }
 
         function settingsHandler() {
-            if($this->authenticatorObject->checkCredentials($this->authorizerObject->getUsername(), $_POST["oldPassword"]) && !strcmp($_POST["passwordUpdate"], $_POST["passwordUpdateRetype"])) {
-                $this->userDbGatewayObject->updatePassword($this->authorizerObject->getUserId(), $_POST["passwordUpdate"]);
-                $this->redirect("/main/user/action/view/userId/" . $this->authorizerObject->getUserId());
+            if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
+                if($this->authenticatorObject->checkCredentials($this->authorizerObject->getUsername(), $_POST["oldPassword"]) && !strcmp($_POST["passwordUpdate"], $_POST["passwordUpdateRetype"])) {
+                    $this->userDbGatewayObject->updatePassword($this->authorizerObject->getUserId(), $_POST["passwordUpdate"]);
+                    $this->redirect("/main/user/action/view/userId/" . $this->authorizerObject->getUserId());
+                }
             }
+            include_once("/html/userSettings.html");
         }
 
         function displayUserPage(){

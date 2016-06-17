@@ -23,21 +23,7 @@
                 include("/html/postNotExist.html");
             }
             else{
-                if(!strcmp($this->uriParser->getAssociativeValue("action"), "view")) {
-                    $post = $this->postDbGatewayObject->getPostFromPostId($this->uriParser->getAssociativeValue("postId"));
-                    include("/html/postPage.html");
-                }
-                elseif(!strcmp($this->uriParser->getAssociativeValue("action"), "delete")) {
-                    if($this->authorizerObject->canDelete($this->uriParser->getAssociativeValue("postId"))) {
-                        $this->deletePost($this->uriParser->getAssociativeValue("postId"));
-                    }
-                    else{
-                        $this->redirect("/html/404.html");
-                    }
-                }
-                else{
-                    $this->redirect("/html/404.html");
-                }
+                $this->validHandler();
             }
 
         }
@@ -55,6 +41,28 @@
             else{
                 return false;
             }
+        }
+
+        function validHandler(){
+            if($this->uriParser->uriCheckAssociativePair("action", "view")) {
+                $post = $this->postDbGatewayObject->getPostFromPostId($this->uriParser->getAssociativeValue("postId"));
+                include("/html/postPage.html");
+            }
+            elseif($this->uriParser->uriCheckAssociativePair("action", "delete")) {
+                $this->deleteAction();
+            }
+            else{
+                $this->redirect("/html/404.html");
+            }
+        }
+
+        function deleteAction(){
+            if($this->authorizerObject->canDelete($this->uriParser->getAssociativeValue("postId"))) {
+                $this->deletePost($this->uriParser->getAssociativeValue("postId"));
+            }
+            else{
+                $this->redirect("/html/404.html");
+            }   
         }
 
         function deletePost($postId) {

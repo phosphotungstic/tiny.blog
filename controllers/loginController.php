@@ -25,20 +25,28 @@
             }
 
             if(!$this->uriParser->isKeySet("action")) {
-                if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
-                    $this->loginHandler($_POST["username"], $_POST["password"]);
-                }
-                include("/html/loginPage.html");
+                $this->defaultLoginHandler();
             }
             elseif($this->uriParser->uriCheckAssociativePair("action", "createAccount")) {
-                if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
-                    $this->accountCreator();
-                }
-                include("/html/createUser.html");
+                $this->createAccountHandler();
             }
             else{
                 header("Location: /html/404.html");
             }
+        }
+
+        function defaultLoginHandler(){
+            if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
+                $this->loginHandler($_POST["username"], $_POST["password"]);
+            }
+            include("/html/loginPage.html");
+        }
+
+        function createAccountHandler(){
+            if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
+                $this->accountCreator();
+            }
+            include("/html/createUser.html");   
         }
 
         function loginHandler($username, $password) {
