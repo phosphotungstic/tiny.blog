@@ -7,20 +7,19 @@
 <body>
     <h1><?= $profileUser->username ?>'s Profile</h1>
     <div class="topright">
-        <a href = "/main">tiny.blog</a><br>
+        <a href = "/main">tiny.blog</a>
         <? if($this->authorizer->ownsUserPage()) { ?>
-            [<a href = "/main/user/action/post">post</a>]<br>
-            [<a href = "/main/user/action/settings">settings</a>]<br>
+            [<a href = "/main/user/action/post">post</a>]
+            [<a href = "/main/user/action/settings">settings</a>]
         <? } ?>
 
         <? if($this->authorizer->isLoggedIn()) { ?>
             [<a href = "/main/user/action/logout">logout</a>]<br>
         <? } ?>
     </div>
-    <br>
 
     <div class="right">
-        <p>
+        <p class="centered">
             Number of posts: <?= $numberPosts ?><br>
             Number of comments: <?= $numberComments ?>
         </p>
