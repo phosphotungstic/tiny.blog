@@ -64,12 +64,11 @@
             $displayUserId = $this->uriParser->getAssociativeValue("userId");
             $profileUser = $this->userDbGateway->createUserFromUserId($displayUserId);
             $this->userDbGateway->addPostsAndCommentsFromUserClass($profileUser);
-            $postArray = $this->postDbGateway->getPostsFromPostIdArray($profileUser->postIds);
+            $postArray = $this->postDbGateway->getPostsFromPostIdArrayWithoutPostername($profileUser->postIds);
             $numberPosts = sizeof($profileUser->postIds);
             $numberComments = sizeof($profileUser->commentIds);
 
             include_once("/html/userPage.html");
-            include_once("/html/postList.html");
         }
     }
 ?>
