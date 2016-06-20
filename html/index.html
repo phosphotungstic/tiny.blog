@@ -27,6 +27,16 @@
         <? } ?>
     </div>
 
+    <div class="left posts">
+        <hr>
+        <? foreach($recentPostsArray as $post) { ?>
+            <p class="smallP">Post #: <a href="/main/post/action/view/postId/<?= $post->postId ?>" class="grey"><?= $post->postId ?></a> by <a href="/main/user/action/view/userId/<?= $post->posterId ?>" class="grey"><?= $post->postername ?></a><br>
+            <?= $post->postContent ?><br>
+            <?= $post->numberComments ?> comments</p>
+            <hr>
+        <? } ?>
+    </div>
+
     <div class="right">
         <form method="post" action="" class="centered">
             <div class="left rightalign">

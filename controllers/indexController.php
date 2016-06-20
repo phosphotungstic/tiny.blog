@@ -9,13 +9,12 @@
                 $this->searchHandler();
             }
             else{
-<<<<<<< HEAD
                 $postArray = $this->postDbGateway->getRecentPosts();
                 $isLoggedIn = $this->authorizer->isLoggedIn();
                 $username = $this->authorizer->getUsername();
-=======
+
                 $recentPostsArray = $this->postDbGateway->getRecentPosts();
->>>>>>> parent of 6e6092e... added postList.html to take care of whenever posts are listed. Changed some design.
+
                 include("/html/index.html");
             }
         }
