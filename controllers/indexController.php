@@ -9,8 +9,9 @@
                 $this->searchHandler();
             }
             else{
-                $recentPostsArray = $this->postDbGateway->getRecentPosts();
+                $postArray = $this->postDbGateway->getRecentPosts();
                 include("/html/index.html");
+                include("/html/postList.html");
             }
         }
 
