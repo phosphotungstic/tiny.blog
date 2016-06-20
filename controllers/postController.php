@@ -1,18 +1,7 @@
 <?
-    include_once("/db/PostDbGateway.php");
-    include_once("/class/UriParse.php");
-    include_once("/class/Authorizer.php");
-
     class PostController extends BaseController{
-        private $userDbGatewayObject;
-        private $postDbGatewayObject;
-        private $uriParser;
-        private $authorizerObject;
-
         function __construct() {
-            $this->postDbGatewayObject = new PostDbGateway;
-            $this->uriParser = new UriParse;
-            $this->authorizerObject = new Authorizer;
+            parent::__construct();
         }
 
         function action() {
@@ -35,7 +24,7 @@
         }
 
         function isValidPostId() {
-            if($this->postDbGatewayObject->doesPostExist((int)$this->uriParser->getAssociativeValue("postId"))) {
+            if($this->postDbGateway->doesPostExist((int)$this->uriParser->getAssociativeValue("postId"))) {
                 return true;
             }
             else{
@@ -56,12 +45,12 @@
         }
 
         function viewAction() {
-            $post = $this->postDbGatewayObject->getPostFromPostId($this->uriParser->getAssociativeValue("postId"));
+            $post = $this->postDbGateway->getPostFromPostId($this->uriParser->getAssociativeValue("postId"));
             include("/html/postPage.html");
         }
 
         function deleteAction() {
-            if($this->authorizerObject->canDelete($this->uriParser->getAssociativeValue("postId"))) {
+            if($this->authorizer->canDelete($this->uriParser->getAssociativeValue("postId"))) {
                 $this->deletePost($this->uriParser->getAssociativeValue("postId"));
             }
             else{
@@ -70,8 +59,8 @@
         }
 
         function deletePost($postId) {
-            $this->postDbGatewayObject->deletePost($postId);
-            $this->redirect("/main/user/action/view/userId/" . $this->authorizerObject->getUserId());
+            $this->postDbGateway->deletePost($postId);
+            $this->redirect("/main/user/action/view/userId/" . $this->authorizer->getUserId());
         }
     }
 ?>

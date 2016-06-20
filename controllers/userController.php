@@ -1,23 +1,7 @@
 <?
-    include_once("/db/UserDbGateway.php");
-    include_once("/db/PostDbGateway.php");
-    include_once("/class/Authenticator.php");
-    include_once("/class/Authorizer.php");
-    include_once("/class/UriParse.php");
-
     class UserController extends BaseController{
-        private $userDbGatewayObject;
-        private $postDbGatewayObject;
-        private $authenticatorObject;
-        private $authorizerObject;
-        private $uriParser;
-
         function __construct() {
-            $this->userDbGatewayObject = new UserDbGateway;
-            $this->postDbGatewayObject = new PostDbGateway;
-            $this->authenticatorObject = new Authenticator;
-            $this->authorizerObject = new Authorizer;
-            $this->uriParser = new UriParse;
+            parent::__construct();
         }
 
         function action() {
@@ -25,10 +9,10 @@
                 session_unset();
                 $this->redirect("/main");
             }
-            elseif($this->uriParser->uriCheckAssociativePair("action", "post") && $this->authorizerObject->isLoggedIn()) {
+            elseif($this->uriParser->uriCheckAssociativePair("action", "post") && $this->authorizer->isLoggedIn()) {
                 $this->postHandler();
             }
-            elseif($this->uriParser->uriCheckAssociativePair("action", "settings") && $this->authorizerObject->isLoggedIn()) {
+            elseif($this->uriParser->uriCheckAssociativePair("action", "settings") && $this->authorizer->isLoggedIn()) {
                 $this->settingsHandler();
             }
             elseif($this->isInvalidUser()) {
@@ -41,7 +25,7 @@
 
         function postHandler() {
             if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
-                $newPostId = $this->postDbGatewayObject->createPost($this->authorizerObject->getUserId(), $_POST["textbox"]);
+                $newPostId = $this->postDbGateway->createPost($this->authorizer->getUserId(), $_POST["textbox"]);
                 $this->redirect("/main/post/action/view/postId/" . $newPostId);
             }
             include_once("/html/userPost.html");
@@ -50,15 +34,15 @@
         function settingsHandler() {
             if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
                 if($this->isValidPasswordChange()) {
-                    $this->userDbGatewayObject->updatePassword($this->authorizerObject->getUserId(), $_POST["passwordUpdate"]);
-                    $this->redirect("/main/user/action/view/userId/" . $this->authorizerObject->getUserId());
+                    $this->userDbGateway->updatePassword($this->authorizer->getUserId(), $_POST["passwordUpdate"]);
+                    $this->redirect("/main/user/action/view/userId/" . $this->authorizer->getUserId());
                 }
             }
             include_once("/html/userSettings.html");
         }
 
         function isValidPasswordChange() {
-            if($this->authenticatorObject->checkCredentials($this->authorizerObject->getUsername(), $_POST["oldPassword"])) {
+            if($this->authenticator->checkCredentials($this->authorizer->getUsername(), $_POST["oldPassword"])) {
                 if(!strcmp($_POST["passwordUpdate"], $_POST["passwordUpdateRetype"])) {
                     return true;
                 }
@@ -67,7 +51,7 @@
         }
 
         function isInvalidUser() {
-            if($this->userDbGatewayObject->isGreaterThanMaxUserId((int)$this->uriParser->getAssociativeValue("userId"))) {
+            if($this->userDbGateway->isGreaterThanMaxUserId((int)$this->uriParser->getAssociativeValue("userId"))) {
                 return true;
             }
             if(!is_numeric($this->uriParser->getAssociativeValue("userId"))) {
@@ -78,9 +62,9 @@
 
         function displayUserPage() {
             $displayUserId = $this->uriParser->getAssociativeValue("userId");
-            $profileUser = $this->userDbGatewayObject->createUserFromUserId($displayUserId);
-            $this->userDbGatewayObject->addPostsAndCommentsFromUserClass($profileUser);
-            $postArray = $this->postDbGatewayObject->getPostsFromPostIdArrayWithoutPostername($profileUser->postIds);
+            $profileUser = $this->userDbGateway->createUserFromUserId($displayUserId);
+            $this->userDbGateway->addPostsAndCommentsFromUserClass($profileUser);
+            $postArray = $this->postDbGateway->getPostsFromPostIdArrayWithoutPostername($profileUser->postIds);
             $numberPosts = sizeof($profileUser->postIds);
             $numberComments = sizeof($profileUser->commentIds);
 

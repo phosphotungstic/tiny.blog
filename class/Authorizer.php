@@ -5,21 +5,21 @@
 
     class Authorizer extends authSharedData{
         private $uriParser;
-        private $postDbGatewayObject;
-        private $authSharedDataObject;
+        private $postDbGateway;
+        private $authSharedData;
 
         public function __construct() {
             $this->uriParser = new UriParse;
-            $this->postDbGatewayObject = new PostDbGateway;
-            $this->authSharedDataObject = new AuthSharedData;
+            $this->postDbGateway = new PostDbGateway;
+            $this->authSharedData = new AuthSharedData;
         }
 
         public function getUserId() {
-            return $this->authSharedDataObject->getUserId();
+            return $this->authSharedData->getUserId();
         }
 
         public function getUsername() {
-            return $this->authSharedDataObject->getUsername();
+            return $this->authSharedData->getUsername();
         }
 
         public function ownsUserPage() {
@@ -32,7 +32,7 @@
         }
 
         public function canDelete($postId) {
-            if($this->postDbGatewayObject->doesUserOwnPost($this->getUserId(), $postId)) {
+            if($this->postDbGateway->doesUserOwnPost($this->getUserId(), $postId)) {
                 return true;
             }
             else{
@@ -41,7 +41,7 @@
         }
 
         public function isLoggedIn() {
-            return $this->authSharedDataObject->isloggedIn();
+            return $this->authSharedData->isloggedIn();
         }
 
     }

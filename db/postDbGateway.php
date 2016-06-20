@@ -1,6 +1,7 @@
 <?
     include_once("/class/Post.php");
-
+    include_once("/db/Dbconnect.php");
+    
     class PostDbGateway{
         public $connection;
 
@@ -41,8 +42,8 @@
         function getPostFromPostId($postId) {
             $newPost = $this->getPostFromPostIdWithoutPostername($postId);    
             include_once("/db/UserDbGateway.php");
-            $userDbGatewayObject = new UserDbGateway;
-            $newPost->postername = $userDbGatewayObject->getUsernameFromUserId($newPost->posterId);
+            $userDbGateway = new UserDbGateway;
+            $newPost->postername = $userDbGateway->getUsernameFromUserId($newPost->posterId);
 
             return $newPost;
         }

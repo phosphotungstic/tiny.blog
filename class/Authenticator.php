@@ -3,33 +3,33 @@
     include_once("/class/AuthSharedData.php");
 
     class Authenticator extends AuthSharedData{
-        private $userDbGatewayObject;
-        private $authSharedDataObject;
+        private $userDbGateway;
+        private $authSharedData;
 
         public function __construct() {
-            $this->userDbGatewayObject = new UserDbGateway;
-            $this->authSharedDataObject = new AuthSharedData;
+            $this->userDbGateway = new UserDbGateway;
+            $this->authSharedData = new AuthSharedData;
         }
 
         public function setLoggedIn($loggedIn) {
-            $this->authSharedDataObject->setLoggedIn($loggedIn);
+            $this->authSharedData->setLoggedIn($loggedIn);
         }
 
         public  function setUserId($userId) {
-            $this->authSharedDataObject->setUserId($userId);
+            $this->authSharedData->setUserId($userId);
         }
 
         public function setUsername($username) {
-            $this->authSharedDataObject->setUsername($username);
+            $this->authSharedData->setUsername($username);
         }
 
         public function setLoggedInUserIdUsername($loggedIn, $userId, $username) {
-            $this->authSharedDataObject->setLoggedInUserIdUsername($loggedIn, $userId, $username);
+            $this->authSharedData->setLoggedInUserIdUsername($loggedIn, $userId, $username);
         }
 
         public function checkCredentials($username, $password) {
-            if($this->userDbGatewayObject->checkUsernamePassword($username, $password)) {
-                $this->authSharedDataObject->setLoggedIn(true);
+            if($this->userDbGateway->checkUsernamePassword($username, $password)) {
+                $this->authSharedData->setLoggedIn(true);
                 return true;
             }
             else{

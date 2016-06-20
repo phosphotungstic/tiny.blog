@@ -1,5 +1,6 @@
 <?
     include_once("/class/User.php");
+    include_once("/db/Dbconnect.php");
     
     class UserDbGateway{
         public $connection;

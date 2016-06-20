@@ -1,26 +1,11 @@
 <?
-    include_once("/db/UserDbGateway.php");
-    include_once("/class/Authenticator.php");
-    include_once("/class/Authorizer.php");
-    include_once("/class/UriParse.php");
-
-
-
     class LoginController extends BaseController{
-        private $userDbGatewayObject;
-        private $authenticatorObject;
-        private $authorizerObject;
-        private $uriParser;
-
         function __construct() {
-            $this->userDbGatewayObject = new UserDbGateway;
-            $this->authenticatorObject = new Authenticator;
-            $this->authorizerObject = new Authorizer;
-            $this->uriParser = new UriParse;
+            parent::__construct();
         }
         
         function action() {
-            if($this->authorizerObject->isLoggedIn()) {
+            if($this->authorizer->isLoggedIn()) {
                 $this->redirect("/main");
             }
 
@@ -50,7 +35,7 @@
         }
 
         function loginHandler($username, $password) {
-            if($this->authenticatorObject->checkCredentials($username, $password)) {
+            if($this->authenticator->checkCredentials($username, $password)) {
                 $this->loadUser($username);
                 $this->redirect("/main");
             }
@@ -60,17 +45,17 @@
         }
 
         function loadUser($username) {
-            $loggedInUser = $this->userDbGatewayObject->createUserFromUsername($username);
-            $this->authenticatorObject->setLoggedIn(true);
-            $this->authenticatorObject->setUsername($loggedInUser->username);
-            $this->authenticatorObject->setUserId($loggedInUser->userId);
+            $loggedInUser = $this->userDbGateway->createUserFromUsername($username);
+            $this->authenticator->setLoggedIn(true);
+            $this->authenticator->setUsername($loggedInUser->username);
+            $this->authenticator->setUserId($loggedInUser->userId);
         }
 
         function accountCreator() {
             if(!$this->validateAccount()) {
                 $this->redirect("/main/login/action/createAccount");
             }
-            $this->userDbGatewayObject->addAccount($_POST["username"], $_POST["password"]);
+            $this->userDbGateway->addAccount($_POST["username"], $_POST["password"]);
             $this->loginHandler($_POST["username"], $_POST["password"]);
         }
 
@@ -79,7 +64,7 @@
             if(strcmp($_POST["password"], $_POST["confirmPassword"])) {
                 $validAccount = false;
             }
-            if(!$this->userDbGatewayObject->checkUsernameAvailable($_POST["username"])) {
+            if(!$this->userDbGateway->checkUsernameAvailable($_POST["username"])) {
                 $validAccount = false;
             }
             if(strlen($_POST["username"]) > 20 || strlen($_POST["password"]) > 20) {

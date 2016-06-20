@@ -1,20 +1,7 @@
 <?
-    include_once("/db/UserDbGateway.php");
-    include_once("/db/PostDbGateway.php");
-    include_once("/class/Authenticator.php");
-    include_once("/class/Authorizer.php");
-
     class IndexController extends BaseController{
-        private $postDbGatewayObject;
-        private $userDbGatewayObject;
-        private $authenticatorObject;
-        private $authorizerObject;
-
         function __construct() {
-            $this->userDbGatewayObject = new UserDbGateway;
-            $this->postDbGatewayObject = new PostDbGateway;
-            $this->authenticatorObject = new Authenticator;
-            $this->authorizerObject = new Authorizer;
+            parent::__construct();
         }
 
         function action() {
@@ -22,14 +9,14 @@
                 $this->searchHandler();
             }
             else{
-                $recentPostsArray = $this->postDbGatewayObject->getRecentPosts();
+                $recentPostsArray = $this->postDbGateway->getRecentPosts();
                 include("/html/index.html");
             }
         }
 
         function searchHandler() {
             if(isset($_POST["usernameSearchSubmit"])) {
-                $foundUserId = $this->userDbGatewayObject->getUserIdFromUsername($_POST["usernameSearch"]);
+                $foundUserId = $this->userDbGateway->getUserIdFromUsername($_POST["usernameSearch"]);
                 $this->redirect("/main/user/action/view/userId/" . $foundUserId);
             }
             if(isset($_POST["postSearchSubmit"])) {

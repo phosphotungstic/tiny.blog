@@ -1,24 +1,13 @@
 <?
     session_start();
 
-    function controllerExists($controllerName) {
-        $registeredControllers = array("login", "post", "user", "index");
-        foreach($registeredControllers as $registeredController) {
-            if(!strcmp($registeredController, $controllerName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    include_once("/db/Dbconnect.php");
-    $dbConnectObject = new Dbconnect;
-
     include_once("/class/UriParse.php");
     $uriParser = new UriParse;
     
     $controllerName = $uriParser->getAssociativeValue("main");
-    if(!controllerExists($controllerName)) {
+    $registeredControllers = array("login", "post", "user", "index");
+
+    if(!in_array($controllerName, $registeredControllers)) {
         header("Location: /main/index");
         exit();
     }
