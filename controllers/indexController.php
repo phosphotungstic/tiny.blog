@@ -14,7 +14,6 @@
                 $username = $this->authorizer->getUsername();
 
                 $recentPostsArray = $this->postDbGateway->getRecentPosts();
-
                 include("/html/index.html");
             }
         }
