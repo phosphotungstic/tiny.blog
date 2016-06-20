@@ -10,11 +10,8 @@
             }
             else{
                 $postArray = $this->postDbGateway->getRecentPosts();
-                $isLoggedIn = $this->authorizer->isLoggedIn();
-                $username = $this->authorizer->getUsername();
-
-                $recentPostsArray = $this->postDbGateway->getRecentPosts();
                 include("/html/index.html");
+                include("/html/postList.html");
             }
         }
 

@@ -10,6 +10,15 @@
             $this->connection = Dbconnect::getConnection();
         }
 
+        function getPostsFromPostIdArrayWithoutPostername($postIds) {
+            $postArray = array();
+            foreach($postIds as $postId) {
+                $newPost = $this->getPostFromPostIdWithoutPostername($postId);
+                array_unshift($postArray, $newPost);
+            }
+            return $postArray;
+        }
+
         function getPostsFromPostIdArray($postIds) {
             $postArray = array();
             foreach($postIds as $postId) {
@@ -19,11 +28,20 @@
             return $postArray;
         }
 
-        function getPostFromPostId($postId) {
-            $query = "select users.username, posts.poster_id, posts.post_id, posts.post_content, posts.number_comments from posts JOIN users where delete_bit = 0 and users.user_id = posts.poster_id and posts.post_id=" . $postId . ";";
+        function getPostFromPostIdWithoutPostername($postId) {
+            $query = "select * from posts where post_id=" . $postId . " and delete_bit = 0;";
             $result = $this->connection->query($query);
             $resultAssoc = $result->fetch_assoc();
-            $newPost = new Post($resultAssoc["username"], $resultAssoc["poster_id"], $resultAssoc["post_id"], $resultAssoc["post_content"], $resultAssoc["number_comments"]);
+            $newPost = new Post($resultAssoc["poster_id"], $resultAssoc["post_id"], $resultAssoc["post_content"], $resultAssoc["number_comments"]);
+
+            return $newPost;
+        }
+
+        function getPostFromPostId($postId) {
+            $newPost = $this->getPostFromPostIdWithoutPostername($postId);    
+            include_once("/db/UserDbGateway.php");
+            $userDbGateway = new UserDbGateway;
+            $newPost->postername = $userDbGateway->getUsernameFromUserId($newPost->posterId);
 
             return $newPost;
         }
@@ -34,7 +52,8 @@
 
             $recentPostArray = array();
             while($resultAssoc = $result->fetch_assoc()) {
-                $newPost = new Post($resultAssoc["username"], $resultAssoc["poster_id"], $resultAssoc["post_id"], $resultAssoc["post_content"], $resultAssoc["number_comments"]);
+                $newPost = new Post($resultAssoc["poster_id"], $resultAssoc["post_id"], $resultAssoc["post_content"], $resultAssoc["number_comments"]);
+                $newPost->postername = $resultAssoc["username"];
                 array_push($recentPostArray, $newPost);
             }
 
