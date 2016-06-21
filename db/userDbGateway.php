@@ -46,60 +46,6 @@
             return $newUser;
         }
 
-
-        /*
-        function createUserFromUserId($userId) {
-            $newUser = new User;
-            $newUser->userId = $userId;
-
-            $query = "select username from users where user_id=" . $userId . ";";
-            $result = $this->connection->query($query);
-            $resultAssoc = $result->fetch_assoc();
-            $newUser->username = $resultAssoc["username"];
-
-            return $newUser;
-        }
-
-        function createUserFromUsername($username) {
-            $newUser = new User;
-            $newUser->username = $username;
-
-            $query = "select user_id from users where username='" . $username . "';";
-            $result = $this->connection->query($query);
-            $resultAssoc = $result->fetch_assoc();
-            $newUser->userId = $resultAssoc["user_id"];
-
-            return $newUser;
-        }
-
-        function addPostsAndCommentsFromUserClass($user) {
-            $user->postIds = $this->getPostsFromUserClass($user);
-            $user->commentIds = $this->getCommentsFromUserClass($user);
-        }
-
-        function getPostsFromUserClass($user) {
-            $query = "select post_id from posts where poster_id=" . $user->userId . " and delete_bit = 0;";
-            $result = $this->connection->query($query);            
-            $userPostIdArray = array();
-            while($resultAssoc = $result->fetch_assoc()) {
-                array_push($userPostIdArray, $resultAssoc["post_id"]);
-            }
-
-            return $userPostIdArray;
-        }
-
-        function getCommentsFromUserClass($user) {
-            $query = "select comment_id from comments where commenter_id=" . $user->userId . ";";
-            $result = $this->connection->query($query);            
-            $userCommentIdArray = array();
-            while($resultAssoc = $result->fetch_assoc()) {
-                array_push($userCommentIdArray, $resultAssoc["comment_id"]);
-            }
-
-            return $userCommentIdArray;
-        }
-        */
-
         function maxUserId() {
             $query = "select max(user_id) from users;";
             $result = $this->connection->query($query);
