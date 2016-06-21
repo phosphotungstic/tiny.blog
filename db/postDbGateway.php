@@ -20,21 +20,21 @@
         }
 
         function getPostFromPostId($postId) {
-            $query = "select users.username, posts.poster_id, posts.post_id, posts.post_content, posts.number_comments from posts JOIN users where delete_bit = 0 and users.user_id = posts.poster_id and posts.post_id=" . $postId . ";";
+            $query = "select users.username, posts.poster_id, posts.post_id, posts.post_content from posts JOIN users where delete_bit = 0 and users.user_id = posts.poster_id and posts.post_id=" . $postId . ";";
             $result = $this->connection->query($query);
             $resultAssoc = $result->fetch_assoc();
-            $newPost = new Post($resultAssoc["username"], $resultAssoc["poster_id"], $resultAssoc["post_id"], $resultAssoc["post_content"], $resultAssoc["number_comments"]);
+            $newPost = new Post($resultAssoc["username"], $resultAssoc["poster_id"], $resultAssoc["post_id"], $resultAssoc["post_content"]);
 
             return $newPost;
         }
 
         function getRecentPosts() {
-            $query = "select users.username, posts.poster_id, posts.post_id, posts.post_content, posts.number_comments from users join posts where users.user_id = posts.poster_id and delete_bit = 0 order by post_id desc limit 5;";
+            $query = "select users.username, posts.poster_id, posts.post_id, posts.post_content from users join posts where users.user_id = posts.poster_id and delete_bit = 0 order by post_id desc limit 5;";
             $result = $this->connection->query($query);
 
             $recentPostArray = array();
             while($resultAssoc = $result->fetch_assoc()) {
-                $newPost = new Post($resultAssoc["username"], $resultAssoc["poster_id"], $resultAssoc["post_id"], $resultAssoc["post_content"], $resultAssoc["number_comments"]);
+                $newPost = new Post($resultAssoc["username"], $resultAssoc["poster_id"], $resultAssoc["post_id"], $resultAssoc["post_content"]);
                 array_push($recentPostArray, $newPost);
             }
 
@@ -43,7 +43,7 @@
 
         function createPost($userId, $postText) {
             $textToStore = nl2br(htmlentities($postText, ENT_QUOTES, 'UTF-8'));
-            $query = "insert into posts VALUES(" . $userId . ", NULL, '" . $textToStore . "', 0, 0);";
+            $query = "insert into posts VALUES(" . $userId . ", NULL, '" . $textToStore . "', 0);";
             $this->connection->query($query);
 
             return $this->connection->insert_id;

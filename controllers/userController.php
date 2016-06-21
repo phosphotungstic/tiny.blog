@@ -19,7 +19,7 @@
                 $this->redirect("/html/404.html");
             }
             else{
-                $this->displayUserpage();
+                $this->displayUserPage();
             }
         }
 
@@ -62,11 +62,9 @@
 
         function displayUserPage() {
             $displayUserId = $this->uriParser->getAssociativeValue("userId");
-            $profileUser = $this->userDbGateway->createUserFromUserId($displayUserId);
-            $this->userDbGateway->addPostsAndCommentsFromUserClass($profileUser);
-            $postArray = $this->postDbGateway->getPostsFromPostIdArray($profileUser->postIds);
-            $numberPosts = sizeof($profileUser->postIds);
-            $numberComments = sizeof($profileUser->commentIds);
+            $profileUser = $this->userDbGateway->getUser($displayUserId);
+            $postArray = $profileUser->posts;
+            $numberPosts = sizeof($profileUser->posts);
 
             include_once("/html/userPage.html");
             include_once("/html/postList.html");

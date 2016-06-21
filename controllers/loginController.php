@@ -45,7 +45,7 @@
         }
 
         function loadUser($username) {
-            $loggedInUser = $this->userDbGateway->createUserFromUsername($username);
+            $loggedInUser = $this->userDbGateway->getUser($username);
             $this->authenticator->setLoggedIn(true);
             $this->authenticator->setUsername($loggedInUser->username);
             $this->authenticator->setUserId($loggedInUser->userId);
