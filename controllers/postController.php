@@ -33,10 +33,10 @@
         }
 
         function validHandler() {
-            if($this->uriParser->uriCheckAssociativePair("action", "view")) {
+            if($this->uriParser->getAction() === "view") {
                 $this->viewAction();
             }
-            elseif($this->uriParser->uriCheckAssociativePair("action", "delete")) {
+            elseif($this->uriParser->getAction() === "delete") {
                 $this->deleteAction();
             }
             else{

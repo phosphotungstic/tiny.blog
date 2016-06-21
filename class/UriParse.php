@@ -37,15 +37,12 @@
             }
         }
 
-        public function uriCheckAssociativePair($key, $value) {
-            if(!$this->isKeySet($key)) {
-                return false;
-            }
-            elseif($this->uriAssociativeArray[$key] === $value) {
-                return true;
+        public function getAction(){
+            if(!$this->isKeySet("action")){
+                return "";
             }
             else{
-                return false;
+                return $this->uriAssociativeArray["action"];
             }
         }
     }

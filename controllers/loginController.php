@@ -12,7 +12,7 @@
             if(!$this->uriParser->isKeySet("action")) {
                 $this->defaultLoginHandler();
             }
-            elseif($this->uriParser->uriCheckAssociativePair("action", "createAccount")) {
+            elseif($this->uriParser->getAction() === "createAccount") {
                 $this->createAccountHandler();
             }
             else{

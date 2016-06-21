@@ -5,14 +5,14 @@
         }
 
         function action() {
-            if($this->uriParser->uriCheckAssociativePair("action", "logout")) {
+            if($this->uriParser->getAction() === "logout") {
                 session_unset();
                 $this->redirect("/main");
             }
-            elseif($this->uriParser->uriCheckAssociativePair("action", "post") && $this->authorizer->isLoggedIn()) {
+            elseif($this->uriParser->getAction() === "post" && $this->authorizer->isLoggedIn()) {
                 $this->postHandler();
             }
-            elseif($this->uriParser->uriCheckAssociativePair("action", "settings") && $this->authorizer->isLoggedIn()) {
+            elseif($this->uriParser->getAction() === "settings" && $this->authorizer->isLoggedIn()) {
                 $this->settingsHandler();
             }
             elseif($this->isInvalidUser()) {
