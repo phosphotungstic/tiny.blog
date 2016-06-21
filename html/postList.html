@@ -1,7 +1,7 @@
 <div class="left posts">
     <hr>
     <? foreach($postArray as $post) { ?>
-        <p class="smallP">Post #: <a href="/main/post/action/view/postId/<?= $post->postId ?>" class="grey"><?= $post->postId ?></a> by <a href="/main/user/action/view/userId/<?= $post->posterId ?>" class="grey"><?= $post->postername ?></a>
+        <p class="smallP">post #: <a href="/main/post/action/view/postId/<?= $post->postId ?>" class="grey"><?= $post->postId ?></a> by <a href="/main/user/action/view/userId/<?= $post->posterId ?>" class="grey"><?= $post->postername ?></a>
         <? if($this->authorizer->canDelete($post->postId)) { ?>
             [<a href="/main/post/action/delete/postId/<?= $post->postId ?>" class="grey">delete</a>]
         <? } ?>

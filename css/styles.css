@@ -24,8 +24,11 @@ a.grey{
     display: inline-block;
 }
 
-.left{
+.listtitle{
     margin-top: 6%;
+}
+
+.left{
     margin-left: 3%;
     float: left;
     width: 45%;
