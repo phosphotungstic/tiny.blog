@@ -2,7 +2,7 @@ body{
     font-family: "PT Mono";
 }
 
-h1, h2{
+h1{
     position: absolute;
     left: 5%;
 }

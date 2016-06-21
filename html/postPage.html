@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <body>
-    <h2>post #: <?= $post->postId ?> by <?= $post->postername ?></h2>
+    <h1>post #: <?= $post->postId ?> by <?= $post->postername ?></h1>
     <div class="topright">
         <a href = "/main">tiny.blog</a>
         <? if($this->authorizer->isLoggedIn()) { ?>
