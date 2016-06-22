@@ -22,7 +22,7 @@
             return $this->authSharedData->getUsername();
         }
 
-        public function ownsUserPage() {
+        public function isPageOwner() {
             if((int)$this->uriParser->getUserId() == $this->getUserId()) {
                 return true;
             }

@@ -43,7 +43,7 @@
         }
         
         protected function isPageOwner(){
-            return $this->authorizer->ownsUserPage();
+            return $this->authorizer->isPageOwner();
         }
 
         protected function canDelete($postId){
