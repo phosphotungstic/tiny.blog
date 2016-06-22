@@ -8,7 +8,7 @@
     <h1><?= $profileUser->username ?>'s Profile</h1>
     <div class="topright">
         <a href = "/main">tiny.blog</a>
-        <? if($ownsPage) { ?>
+        <? if($this->isPageOwner()) { ?>
             [<a href = "/main/user/action/post">post</a>]
             [<a href = "/main/user/action/settings">settings</a>]
         <? } ?>

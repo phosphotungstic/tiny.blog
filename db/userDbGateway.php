@@ -90,13 +90,13 @@
             $this->connection->query($query);
         }
 
-        function isGreaterThanMaxUserId($userId) {
+        function isValidUser($userId) {
             $maxUserId = $this->maxUserId();
             if($userId > $maxUserId) {
-                return true;
+                return false;
             }
             else{
-                return false;
+                return true;
             }
         }
 

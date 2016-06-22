@@ -30,12 +30,7 @@
         abstract protected function action();
 
         protected function isLoggedInAccess() {
-            if($this->authorizer->isLoggedIn()) {
-                return true;
-            }
-            else{
-                return false;
-            }
+            return $this->authorizer->isLoggedIn();
         }
 
         protected function isPostRequest() {
@@ -45,6 +40,14 @@
             else{
                 return false;
             }
+        }
+        
+        protected function isPageOwner(){
+            return $this->authorizer->ownsUserPage();
+        }
+
+        protected function canDelete($postId){
+            return $this->authorizer->canDelete($postId);
         }
     }
 

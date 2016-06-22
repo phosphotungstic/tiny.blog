@@ -71,7 +71,7 @@
         }
 
         function isInvalidUser() {
-            if($this->userDbGateway->isGreaterThanMaxUserId((int)$this->uriParser->getUserId())) {
+            if(!$this->userDbGateway->isValiduser((int)$this->uriParser->getUserId())) {
                 return true;
             }
             if(!is_numeric($this->uriParser->getUserId())) {
@@ -85,7 +85,6 @@
             $profileUser = $this->userDbGateway->getUser($displayUserId);
             $postArray = $profileUser->posts;
             $numberPosts = sizeof($profileUser->posts);
-            $ownsPage = $this->authorizer->ownsUserPage();
 
             include_once("/html/userPage.html");
             include_once("/html/postList.html");
