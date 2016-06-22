@@ -5,7 +5,7 @@
         }
 
         function action() {
-            if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
+            if($this->isPostRequest()) {
                 $this->searchHandler();
             }
             else{

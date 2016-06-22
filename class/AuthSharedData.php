@@ -2,7 +2,7 @@
     session_start();
 
     class AuthSharedData{
-        protected function setLoggedInUserIdUsername($loggedIn, $userId, $username) {
+        protected function setUser($loggedIn, $userId, $username) {
             $_SESSION["loggedIn"] = $loggedIn;
             $_SESSION["userId"] = $userId;
             $_SESSION["username"] = $username;

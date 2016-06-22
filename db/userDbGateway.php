@@ -21,21 +21,19 @@
             }
         }
 
-        function getUser($userInfo){
+        function getUser($userInfo) {
             $newUser = new User;
 
-            if(is_numeric($userInfo)){
-                $newUser->userId = $userInfo;
+            if(is_numeric($userInfo)) {
                 $query = "select users.username, users.user_id, posts.post_id, posts.post_content from users JOIN posts where delete_bit = 0 AND poster_id = user_id AND user_id=" . $userInfo . ";";
             }
             else{
-                $newUser->username = $userInfo;
                 $query = "select users.username, users.user_id, posts.post_id, posts.post_content from users JOIN posts where delete_bit = 0 AND poster_id = user_id AND username='" . $userInfo . "';";
             }
             $result = $this->connection->query($query);
             $postArray = array();
 
-            while($resultArray = $result->fetch_assoc()){
+            while($resultArray = $result->fetch_assoc()) {
                 $newUser->username = $resultArray["username"];
                 $newUser->userId = $resultArray["user_id"];
                 $post = new Post($resultArray["username"], $resultArray["user_id"], $resultArray["post_id"], $resultArray["post_content"]);

@@ -28,17 +28,35 @@
             return $this->uriAssociativeArray[$key];
         }
 
-        public function isKeySet($key) {
-            if(!isset($this->uriAssociativeArray[$key])) {
-                return false;
+        public function getPostId() {
+            if(!$this->isKeySet("postId")) {
+                return -1;
             }
             else{
-                return true;
+                return $this->uriAssociativeArray["postId"];
             }
         }
 
-        public function getAction(){
-            if(!$this->isKeySet("action")){
+        public function getUserId() {
+            if(!$this->isKeySet("userId")) {
+                return -1;
+            }
+            else{
+                return $this->uriAssociativeArray["userId"];
+            }
+        }
+
+        public function isKeySet($key) {
+            if(isset($this->uriAssociativeArray[$key])) {
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+        public function getAction() {
+            if(!$this->isKeySet("action")) {
                 return "";
             }
             else{

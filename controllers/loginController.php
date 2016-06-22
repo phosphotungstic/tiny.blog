@@ -5,7 +5,7 @@
         }
         
         function action() {
-            if($this->authorizer->isLoggedIn()) {
+            if($this->isLoggedInAccess()) {
                 $this->redirect("/main");
             }
 
@@ -21,14 +21,14 @@
         }
 
         function defaultLoginHandler() {
-            if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
+            if($this->isPostRequest()) {
                 $this->loginHandler($_POST["username"], $_POST["password"]);
             }
             include("/html/loginPage.html");
         }
 
         function createAccountHandler() {
-            if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
+            if($this->isPostRequest()) {
                 $this->accountCreator();
             }
             include("/html/createUser.html");   
@@ -46,9 +46,7 @@
 
         function loadUser($username) {
             $loggedInUser = $this->userDbGateway->getUser($username);
-            $this->authenticator->setLoggedIn(true);
-            $this->authenticator->setUsername($loggedInUser->username);
-            $this->authenticator->setUserId($loggedInUser->userId);
+            $this->authenticator->setUser(true, $loggedInUser);
         }
 
         function accountCreator() {

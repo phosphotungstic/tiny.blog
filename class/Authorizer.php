@@ -23,7 +23,7 @@
         }
 
         public function ownsUserPage() {
-            if((int)$this->uriParser->getAssociativeValue("userId") == $this->getUserId()) {
+            if((int)$this->uriParser->getUserId() == $this->getUserId()) {
                 return true;
             }
             else{
@@ -41,7 +41,7 @@
         }
 
         public function isLoggedIn() {
-            return $this->authSharedData->isloggedIn();
+            return $this->authSharedData->isLoggedIn();
         }
 
     }

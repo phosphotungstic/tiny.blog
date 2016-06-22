@@ -24,7 +24,7 @@
         }
 
         function isValidPostId() {
-            if($this->postDbGateway->doesPostExist((int)$this->uriParser->getAssociativeValue("postId"))) {
+            if($this->postDbGateway->doesPostExist((int)$this->uriParser->getPostId())) {
                 return true;
             }
             else{
@@ -33,25 +33,28 @@
         }
 
         function validHandler() {
-            if($this->uriParser->getAction() === "view") {
-                $this->viewAction();
-            }
-            elseif($this->uriParser->getAction() === "delete") {
-                $this->deleteAction();
-            }
-            else{
-                $this->redirect("/html/404.html");
+            $action = $this->uriParser->getAction();
+
+            switch ($action) {
+                case "view":
+                    $this->viewAction();
+                    break;
+                case "delete":
+                    $this->deleteAction();
+                    break;
+                default:
+                    $this->redirect("/html/404.html");
             }
         }
 
         function viewAction() {
-            $post = $this->postDbGateway->getPostFromPostId($this->uriParser->getAssociativeValue("postId"));
+            $post = $this->postDbGateway->getPostFromPostId($this->uriParser->getPostId());
             include("/html/postPage.html");
         }
 
         function deleteAction() {
-            if($this->authorizer->canDelete($this->uriParser->getAssociativeValue("postId"))) {
-                $this->deletePost($this->uriParser->getAssociativeValue("postId"));
+            if($this->authorizer->canDelete($this->uriParser->getPostId())) {
+                $this->deletePost($this->uriParser->getPostId());
             }
             else{
                 $this->redirect("/html/404.html");
@@ -60,7 +63,7 @@
 
         function deletePost($postId) {
             $this->postDbGateway->deletePost($postId);
-            $this->redirect("/main/user/action/view/userId/" . $this->authorizer->getUserId());
+            $this->redirect($_SERVER['HTTP_REFERER']);
         }
     }
 ?>

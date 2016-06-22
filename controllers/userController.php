@@ -5,26 +5,43 @@
         }
 
         function action() {
-            if($this->uriParser->getAction() === "logout") {
-                session_unset();
-                $this->redirect("/main");
+            $action = $this->uriParser->getAction();
+
+            switch($action) {
+                case "logout":
+                    session_unset();
+                    $this->redirect("/main");
+                    break;
+                case "post":
+                    if($this->isLoggedInAccess()) {
+                        $this->postHandler();
+                    }
+                    else{
+                        $this->redirect("/html/404.html");
+                    }
+                    break;
+                case "settings":
+                    if($this->isLoggedInAccess()) {
+                        $this->settingsHandler();
+                    }
+                    else{
+                        $this->redirect("/html/404.html");
+                    }
+                    break;
+                default:
+                    if($this->isInvalidUser()) {
+                        $this->redirect("/html/404.html");
+                    }
+                    else {
+                        $this->displayUserPage();
+                    }
+                    break;
             }
-            elseif($this->uriParser->getAction() === "post" && $this->authorizer->isLoggedIn()) {
-                $this->postHandler();
-            }
-            elseif($this->uriParser->getAction() === "settings" && $this->authorizer->isLoggedIn()) {
-                $this->settingsHandler();
-            }
-            elseif($this->isInvalidUser()) {
-                $this->redirect("/html/404.html");
-            }
-            else{
-                $this->displayUserPage();
-            }
+
         }
 
         function postHandler() {
-            if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
+            if($this->isPostRequest()) {
                 $newPostId = $this->postDbGateway->createPost($this->authorizer->getUserId(), $_POST["textbox"]);
                 $this->redirect("/main/post/action/view/postId/" . $newPostId);
             }
@@ -32,7 +49,7 @@
         }
 
         function settingsHandler() {
-            if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
+            if($this->isPostRequest()) {
                 if($this->isValidPasswordChange()) {
                     $this->userDbGateway->updatePassword($this->authorizer->getUserId(), $_POST["passwordUpdate"]);
                     $this->redirect("/main/user/action/view/userId/" . $this->authorizer->getUserId());
@@ -51,17 +68,17 @@
         }
 
         function isInvalidUser() {
-            if($this->userDbGateway->isGreaterThanMaxUserId((int)$this->uriParser->getAssociativeValue("userId"))) {
+            if($this->userDbGateway->isGreaterThanMaxUserId((int)$this->uriParser->getUserId())) {
                 return true;
             }
-            if(!is_numeric($this->uriParser->getAssociativeValue("userId"))) {
+            if(!is_numeric($this->uriParser->getUserId())) {
                 return true;
             }
             return false;
         }
 
         function displayUserPage() {
-            $displayUserId = $this->uriParser->getAssociativeValue("userId");
+            $displayUserId = $this->uriParser->getUserId();
             $profileUser = $this->userDbGateway->getUser($displayUserId);
             $postArray = $profileUser->posts;
             $numberPosts = sizeof($profileUser->posts);

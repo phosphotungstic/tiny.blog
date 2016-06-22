@@ -23,8 +23,8 @@
             $this->authSharedData->setUsername($username);
         }
 
-        public function setLoggedInUserIdUsername($loggedIn, $userId, $username) {
-            $this->authSharedData->setLoggedInUserIdUsername($loggedIn, $userId, $username);
+        public function setUser($loggedIn, $user) {
+            $this->authSharedData->setUser($loggedIn, $user->userId, $user->username);
         }
 
         public function checkCredentials($username, $password) {
