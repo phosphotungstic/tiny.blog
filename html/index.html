@@ -8,12 +8,12 @@
     <h1>tiny.blog</h1>
 
     <div class="topright">
-        <? if(!$this->authorizer->isLoggedIn()) { ?>
+        <? if(!$this->isLoggedInAccess()) { ?>
             [<a href = "/main/login">login</a>]<br><br>
         <? } else { ?>
-            [<a href = "/main/user/action/view/userId/<?= $this->authorizer->getUserId() ?>">user</a>]
+            [<a href = "/main/user/action/view/userId/<?= $userId ?>">user</a>]
             [<a href = "/main/user/action/logout">logout</a>]<br>
-            logged in as <?= $this->authorizer->getUsername() ?>
+            logged in as <?= $username ?>
         <? } ?>
     </div>
 

@@ -45,6 +45,7 @@
                 $newPostId = $this->postDbGateway->createPost($this->authorizer->getUserId(), $_POST["textbox"]);
                 $this->redirect("/main/post/action/view/postId/" . $newPostId);
             }
+            $userId = $this->authorizer->getUserId();
             include_once("/html/userPost.html");
         }
 
@@ -55,6 +56,8 @@
                     $this->redirect("/main/user/action/view/userId/" . $this->authorizer->getUserId());
                 }
             }
+
+            $userId = $this->authorizer->getUserId();
             include_once("/html/userSettings.html");
         }
 
@@ -82,6 +85,7 @@
             $profileUser = $this->userDbGateway->getUser($displayUserId);
             $postArray = $profileUser->posts;
             $numberPosts = sizeof($profileUser->posts);
+            $ownsPage = $this->authorizer->ownsUserPage();
 
             include_once("/html/userPage.html");
             include_once("/html/postList.html");

@@ -8,12 +8,12 @@
     <h1><?= $profileUser->username ?>'s Profile</h1>
     <div class="topright">
         <a href = "/main">tiny.blog</a>
-        <? if($this->authorizer->ownsUserPage()) { ?>
+        <? if($ownsPage) { ?>
             [<a href = "/main/user/action/post">post</a>]
             [<a href = "/main/user/action/settings">settings</a>]
         <? } ?>
 
-        <? if($this->authorizer->isLoggedIn()) { ?>
+        <? if($this->isLoggedInAccess()) { ?>
             [<a href = "/main/user/action/logout">logout</a>]<br>
         <? } ?>
     </div>

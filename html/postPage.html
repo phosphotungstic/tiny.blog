@@ -8,8 +8,8 @@
     <h1>post #: <?= $post->postId ?> by <?= $post->postername ?></h1>
     <div class="topright">
         <a href = "/main">tiny.blog</a>
-        <? if($this->authorizer->isLoggedIn()) { ?>
-            [<a href = "/main/user/action/view/userId/<?= $this->authorizer->getUserId(); ?>">profile</a>]
+        <? if($this->isLoggedInAccess()) { ?>
+            [<a href = "/main/user/action/view/userId/<?= $userId; ?>">profile</a>]
         <? } ?>
     </div>
     <br>

@@ -49,6 +49,7 @@
 
         function viewAction() {
             $post = $this->postDbGateway->getPostFromPostId($this->uriParser->getPostId());
+            $userId = $this->authorizer->getUserId();
             include("/html/postPage.html");
         }
 

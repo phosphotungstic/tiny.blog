@@ -29,7 +29,7 @@
         
         abstract protected function action();
 
-        protected  function isLoggedInAccess() {
+        protected function isLoggedInAccess() {
             if($this->authorizer->isLoggedIn()) {
                 return true;
             }
