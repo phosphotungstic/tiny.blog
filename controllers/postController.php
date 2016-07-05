@@ -5,36 +5,8 @@
         }
 
         function action() {
-            if($this->isValidUri()) {
-                $this->redirect("/html/404.html");
-            }
-            elseif(!$this->isValidPostId()) {
-                include("/html/postNotExist.html");
-            }
-            else{
-                $this->validHandler();
-            }
-
-        }
-
-        function isValidUri() {
-            if(!$this->uriParser->isKeySet("postId")) {
-                return false;
-            }
-        }
-
-        function isValidPostId() {
-            if($this->postDbGateway->doesPostExist((int)$this->uriParser->getPostId())) {
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
-
-        function validHandler() {
+            $this->validateRequest();
             $action = $this->uriParser->getAction();
-
             switch ($action) {
                 case "view":
                     $this->viewAction();
@@ -45,11 +17,31 @@
                 default:
                     $this->redirect("/html/404.html");
             }
+
+        }
+
+        function validateRequest(){
+            if(!$this->isValidUri()) {
+                $this->redirect("/html/404.html");
+            }
+
+            if(!$this->isValidPostId()) {
+                include("/html/postNotExist.html");
+                exit();
+            }
+        }
+
+        function isValidUri() {
+            return $this->uriParser->isKeySet("postId");
+        }
+
+        function isValidPostId() {
+            return $this->postDbGateway->doesPostExist((int)$this->uriParser->getPostId());
         }
 
         function viewAction() {
-            $post = $this->postDbGateway->getPostFromPostId($this->uriParser->getPostId());
-            $userId = $this->authorizer->getUserId();
+            $postPageView["post"] = $this->postDbGateway->getPostFromPostId($this->uriParser->getPostId());
+            $postPageView["userId"] = $this->authorizer->getUserId();
             include("/html/postPage.html");
         }
 
@@ -57,9 +49,7 @@
             if($this->authorizer->canDelete($this->uriParser->getPostId())) {
                 $this->deletePost($this->uriParser->getPostId());
             }
-            else{
-                $this->redirect("/html/404.html");
-            }   
+            $this->redirect("/html/404.html");
         }
 
         function deletePost($postId) {

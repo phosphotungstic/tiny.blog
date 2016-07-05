@@ -1,74 +1,54 @@
 <?
+    include_once(__DIR__ . "/../class/UserCreator.php");
+
     class LoginController extends BaseController{
+        private $userCreator;
+
         function __construct() {
             parent::__construct();
+            $this->userCreator = new UserCreator;
         }
         
         function action() {
-            if($this->isLoggedInAccess()) {
+            if($this->isLoggedIn()) {
                 $this->redirect("/main");
             }
 
-            if(!$this->uriParser->isKeySet("action")) {
-                $this->defaultLoginHandler();
-            }
-            elseif($this->uriParser->getAction() === "createAccount") {
-                $this->createAccountHandler();
-            }
-            else{
-                header("Location: /html/404.html");
+            $action = $this->uriParser->getAction();
+            switch($action) {
+                case "":
+                    $this->handleDefaultLogin();
+                    break;
+                case "createAccount":
+                    $this->handleUserCreation();
+                    break;
+                default:
+                    $this->redirect("/html/404.html");
             }
         }
 
-        function defaultLoginHandler() {
+        function handleDefaultLogin() {
             if($this->isPostRequest()) {
-                $this->loginHandler($_POST["username"], $_POST["password"]);
+                $this->handleLogin();
             }
             include("/html/loginPage.html");
         }
 
-        function createAccountHandler() {
+        function handleUserCreation() {
             if($this->isPostRequest()) {
-                $this->accountCreator();
+                if($this->userCreator->successfulUserCreation()) {
+                    $this->handleLogin();
+                }
+                $this->redirect("/main/login/action/createAccount");
             }
             include("/html/createUser.html");   
         }
 
-        function loginHandler($username, $password) {
-            if($this->authenticator->checkCredentials($username, $password)) {
-                $this->loadUser($username);
+        function handleLogin() {
+            if($this->authenticator->isSuccessfulLogin($_POST["username"], $_POST["password"])){
                 $this->redirect("/main");
             }
-            else{
-                $this->redirect("/main/login");
-            }
-        }
-
-        function loadUser($username) {
-            $loggedInUser = $this->userDbGateway->getUser($username);
-            $this->authenticator->setUser(true, $loggedInUser);
-        }
-
-        function accountCreator() {
-            if(!$this->validateAccount()) {
-                $this->redirect("/main/login/action/createAccount");
-            }
-            $this->userDbGateway->addAccount($_POST["username"], $_POST["password"]);
-            $this->loginHandler($_POST["username"], $_POST["password"]);
-        }
-
-        function validateAccount() {
-            $validAccount = true;
-            if(strcmp($_POST["password"], $_POST["confirmPassword"])) {
-                $validAccount = false;
-            }
-            if(!$this->userDbGateway->checkUsernameAvailable($_POST["username"])) {
-                $validAccount = false;
-            }
-            if(strlen($_POST["username"]) > 20 || strlen($_POST["password"]) > 20) {
-                $validAccount = false;
-            }
-            return $validAccount;
+            $this->redirect("/main/login");
         }
     }
 ?>

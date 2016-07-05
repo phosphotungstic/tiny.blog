@@ -23,21 +23,11 @@
         }
 
         public function isPageOwner() {
-            if((int)$this->uriParser->getUserId() == $this->getUserId()) {
-                return true;
-            }
-            else{
-                return false;
-            }
+            return (int)$this->uriParser->getUserId() == $this->getUserId();
         }
 
         public function canDelete($postId) {
-            if($this->postDbGateway->doesUserOwnPost($this->getUserId(), $postId)) {
-                return true;
-            }
-            else{
-                return false;
-            }
+            return $this->postDbGateway->doesUserOwnPost($this->getUserId(), $postId);
         }
 
         public function isLoggedIn() {

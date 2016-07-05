@@ -2,17 +2,15 @@
     include_once("/db/UserDbGateway.php");
     include_once("/db/PostDbGateway.php");
     include_once("/class/Authenticator.php");
-    include_once("/class/Authorizer.php");
+    include_once("/class/Authenticator.php");
     include_once("/class/UriParse.php");
 
-    abstract class BaseController{
-        public $controller;
+    abstract class BaseController {
         protected $postDbGateway;
         protected $userDbGateway;
         protected $authenticator;
         protected $authorizer;
         protected $uriParser;
-
 
         public function __construct() {
             $this->userDbGateway = new UserDbGateway;
@@ -29,26 +27,12 @@
         
         abstract protected function action();
 
-        protected function isLoggedInAccess() {
+        protected function isPostRequest() {
+            return !strcmp($_SERVER['REQUEST_METHOD'], "POST");
+        }
+
+        protected function isLoggedIn(){
             return $this->authorizer->isLoggedIn();
         }
-
-        protected function isPostRequest() {
-            if(!strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
-        
-        protected function isPageOwner(){
-            return $this->authorizer->isPageOwner();
-        }
-
-        protected function canDelete($postId){
-            return $this->authorizer->canDelete($postId);
-        }
     }
-
 ?>

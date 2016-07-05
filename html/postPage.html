@@ -1,21 +1,21 @@
 <html>
 <head>
-    <title>post <?= $post->postId ?></title>
+    <title>post <?= $postPageView["post"]->postId ?></title>
     <link href='https://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <body>
-    <h1>post #: <?= $post->postId ?> by <?= $post->postername ?></h1>
+    <h1>post #: <?= $postPageView["post"]->postId ?> by <?= $postPageView["post"]->postername ?></h1>
     <div class="topright">
         <a href = "/main">tiny.blog</a>
-        <? if($this->isLoggedInAccess()) { ?>
-            [<a href = "/main/user/action/view/userId/<?= $userId; ?>">profile</a>]
+        <? if($this->isLoggedIn()) { ?>
+            [<a href = "/main/user/action/view/userId/<?= $postPageView['userId']; ?>">profile</a>]
         <? } ?>
     </div>
     <br>
 
     <div class="postPage">
-        <p><?= $post->postContent ?></p><br><br><br>
+        <p><?= $postPageView["post"]->postContent ?></p><br><br><br>
     </div>
 
 </body>

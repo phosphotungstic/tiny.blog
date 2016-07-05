@@ -13,19 +13,14 @@
         function checkUsernamePassword($username, $password) {
             $query = "select username, password from users where username='" . $username . "' and password='" . $password . "';";
             $result = $this->connection->query($query);
-            if($result->num_rows == 0) {
-                return false;
-            }
-            else{
-                return true;
-            }
+            return $result->num_rows;
         }
 
         function getUser($userInfo) {
             $newUser = new User;
 
             if(is_numeric($userInfo)) {
-                $query = "select users.username, users.user_id, posts.post_id, posts.post_content from users JOIN posts where delete_bit = 0 AND poster_id = user_id AND user_id=" . $userInfo . ";";
+                $query = "select users.username, users.user_id, posts.post_id, posts.post_content from users JOIN posts ON posts.poster_id = users.user_id where delete_bit = 0 AND users.user_id=" . $userInfo . ";";
             }
             else{
                 $query = "select users.username, users.user_id, posts.post_id, posts.post_content from users JOIN posts where delete_bit = 0 AND poster_id = user_id AND username='" . $userInfo . "';";
@@ -44,27 +39,14 @@
             return $newUser;
         }
 
-        function maxUserId() {
-            $query = "select max(user_id) from users;";
-            $result = $this->connection->query($query);
-            $resultAssoc = $result->fetch_assoc();
-
-            return $resultAssoc["max(user_id)"];
-        }
-
         function checkUsernameAvailable($username) {
             $query = "select * from users where username='" . $username . "';";
             $result = $this->connection->query($query);
-            if($result->num_rows == 0) {
-                return true;
-            }
-            else{
-                return false;
-            }
+            return !$result->num_rows;
         }
 
 
-        function addAccount($username, $password) {
+        function createAccount($username, $password) {
             $query = "insert into users VALUES(NULL, '" . $username . "','" . $password . "');";
             $this->connection->query($query);
         }
@@ -73,16 +55,7 @@
             $query = "select user_id from users where username='" . $username . "';";
             $result = $this->connection->query($query);
             $resultAssoc = $result->fetch_assoc();
-
             return $resultAssoc["user_id"];
-        }
-
-        function getUsernameFromUserId($userId) {
-            $query = "select username from users where user_id=" . $userId . ";";
-            $result = $this->connection->query($query);
-            $resultAssoc = $result->fetch_assoc();
-            
-            return $resultAssoc["username"];
         }
 
         function updatePassword($userId, $passwordUpdate) {
@@ -90,14 +63,11 @@
             $this->connection->query($query);
         }
 
+ 
         function isValidUser($userId) {
-            $maxUserId = $this->maxUserId();
-            if($userId > $maxUserId) {
-                return false;
-            }
-            else{
-                return true;
-            }
+            $query = "select * from users where userId = " . $userId . ";";
+            $result = $this->connection->query($query);
+            return $result->num_rows;
         }
 
     }

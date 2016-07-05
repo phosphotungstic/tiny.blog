@@ -6,25 +6,40 @@
 
         function action() {
             if($this->isPostRequest()) {
-                $this->searchHandler();
+                $this->handleSearch();
             }
             else{
-                $postArray = $this->postDbGateway->getRecentPosts();
-                $userId = $this->authorizer->getUserId();
-                $username = $this->authorizer->getUsername();
-                include("/html/index.html");
-                include("/html/postList.html");
+                $this->displayIndex();
             }
         }
 
-        function searchHandler() {
+        function displayIndex(){
+            $indexView = array();
+            $indexView["userId"] = $this->authorizer->getUserId();
+            $indexView["username"] = $this->authorizer->getUsername();
+            include("/html/index.html");
+
+            $postListView = array();
+            $postListView["postArray"] = $this->postDbGateway->getRecentPosts();
+            include("/html/postList.html");
+        }
+
+        function handleSearch() {
             if(isset($_POST["usernameSearchSubmit"])) {
-                $foundUserId = $this->userDbGateway->getUserIdFromUsername($_POST["usernameSearch"]);
-                $this->redirect("/main/user/action/view/userId/" . $foundUserId);
+                $this->redirectUsernameSearch();
             }
             if(isset($_POST["postSearchSubmit"])) {
-                $this->redirect("/main/post/action/view/postId/" . $_POST["postSearch"]);
+                $this->redirectPostSearch();
             }
+        }
+
+        function redirectUsernameSearch() {
+            $foundUserId = $this->userDbGateway->getUserIdFromUsername($_POST["usernameSearch"]);
+            $this->redirect("/main/user/action/view/userId/" . $foundUserId);
+        }
+
+        function redirectPostSearch() {
+            $this->redirect("/main/post/action/view/postId/" . $_POST["postSearch"]);
         }
     }
 ?>

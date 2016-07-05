@@ -1,8 +1,8 @@
 <div class="left posts">
     <hr>
-    <? foreach($postArray as $post) { ?>
+    <? foreach($postListView["postArray"] as $post) { ?>
         <p class="smallP">post #: <a href="/main/post/action/view/postId/<?= $post->postId ?>" class="grey"><?= $post->postId ?></a> by <a href="/main/user/action/view/userId/<?= $post->posterId ?>" class="grey"><?= $post->postername ?></a>
-        <? if($this->canDelete($post->postId)) { ?>
+        <? if($post->canDelete()) { ?>
             [<a href="/main/post/action/delete/postId/<?= $post->postId ?>" class="grey">delete</a>]
         <? } ?>
         <br>

@@ -47,12 +47,7 @@
         }
 
         public function isKeySet($key) {
-            if(isset($this->uriAssociativeArray[$key])) {
-                return true;
-            }
-            else{
-                return false;
-            }
+            return isset($this->uriAssociativeArray[$key]);
         }
 
         public function getAction() {

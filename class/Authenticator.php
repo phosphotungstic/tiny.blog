@@ -23,19 +23,21 @@
             $this->authSharedData->setUsername($username);
         }
 
-        public function setUser($loggedIn, $user) {
-            $this->authSharedData->setUser($loggedIn, $user->userId, $user->username);
+        public function isSuccessfulLogin($username, $password) {
+            if($this->checkCredentials($username, $password)) {
+                $this->setUser($username);
+                return true;
+            }
+            return false;
+        }
+
+        public function setUser($username) {
+            $loggedInUser = $this->userDbGateway->getUser($username);
+            $this->authSharedData->setUser(true, $loggedInUser->userId, $loggedInUser->username);
         }
 
         public function checkCredentials($username, $password) {
-            if($this->userDbGateway->checkUsernamePassword($username, $password)) {
-                $this->authSharedData->setLoggedIn(true);
-                return true;
-            }
-            else{
-                return false;
-            }
+            return $this->userDbGateway->checkUsernamePassword($username, $password);
         }
-
     }
 ?>

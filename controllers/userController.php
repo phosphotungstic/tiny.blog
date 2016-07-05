@@ -1,92 +1,85 @@
 <?
+    include_once("/class/PasswordChanger.php");
+    include_once("/class/User.php");
+    include_once("/class/Post.php");
+
     class UserController extends BaseController{
+        private $passwordChanger;
+        private $user;
+        private $post;
+
         function __construct() {
             parent::__construct();
+            $this->passwordChanger = new PasswordChanger;
+            $this->user = new User;
+            $this->post = new Post(NULL, NULL, NULL, NULL, NULL);
         }
 
         function action() {
-            $action = $this->uriParser->getAction();
-
-            switch($action) {
-                case "logout":
-                    session_unset();
-                    $this->redirect("/main");
-                    break;
-                case "post":
-                    if($this->isLoggedInAccess()) {
-                        $this->postHandler();
-                    }
-                    else{
-                        $this->redirect("/html/404.html");
-                    }
-                    break;
-                case "settings":
-                    if($this->isLoggedInAccess()) {
-                        $this->settingsHandler();
-                    }
-                    else{
-                        $this->redirect("/html/404.html");
-                    }
-                    break;
-                default:
-                    if($this->isInvalidUser()) {
-                        $this->redirect("/html/404.html");
-                    }
-                    else {
-                        $this->displayUserPage();
-                    }
-                    break;
+            if(!$this->user->isValidUser()) {
+                $this->redirect("/html/404.html");
             }
 
+            $action = $this->uriParser->getAction();
+            if($action === "view") {
+                    $this->displayUserPage();
+                    exit();
+            }
+
+            if($this->isLoggedIn()) {
+                switch($action) {
+                    case "logout":
+                        session_unset();
+                        $this->redirect("/main");
+                        break;
+                    case "post":
+                        $this->handleNewPost();
+                        break;
+                    case "settings":
+                        $this->handleSettings();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else {
+                $this->redirect("/html/404.html");
+            }
         }
 
-        function postHandler() {
+        function handleNewPost() {
             if($this->isPostRequest()) {
-                $newPostId = $this->postDbGateway->createPost($this->authorizer->getUserId(), $_POST["textbox"]);
+                $newPostId = $this->post->createPost();
                 $this->redirect("/main/post/action/view/postId/" . $newPostId);
             }
-            $userId = $this->authorizer->getUserId();
+            $userPostView = array();
+            $userPostView["userId"] = $this->authorizer->getUserId();
             include_once("/html/userPost.html");
         }
 
-        function settingsHandler() {
+        function handleSettings() {
             if($this->isPostRequest()) {
-                if($this->isValidPasswordChange()) {
-                    $this->userDbGateway->updatePassword($this->authorizer->getUserId(), $_POST["passwordUpdate"]);
-                    $this->redirect("/main/user/action/view/userId/" . $this->authorizer->getUserId());
+                if($this->passwordChanger->isValidPasswordChange()) {
+                    $this->passwordChanger->changePassword();
+                    $this->redirect("/main/index");
                 }
+                $this->redirect("/main/user/action/settings");
             }
-
-            $userId = $this->authorizer->getUserId();
+            
+            $userSettingsView = array();
+            $userSettingsView["userId"] = $this->authorizer->getUserId();
             include_once("/html/userSettings.html");
         }
 
-        function isValidPasswordChange() {
-            if($this->authenticator->checkCredentials($this->authorizer->getUsername(), $_POST["oldPassword"])) {
-                if(!strcmp($_POST["passwordUpdate"], $_POST["passwordUpdateRetype"])) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        function isInvalidUser() {
-            if(!$this->userDbGateway->isValiduser((int)$this->uriParser->getUserId())) {
-                return true;
-            }
-            if(!is_numeric($this->uriParser->getUserId())) {
-                return true;
-            }
-            return false;
-        }
-
         function displayUserPage() {
-            $displayUserId = $this->uriParser->getUserId();
-            $profileUser = $this->userDbGateway->getUser($displayUserId);
-            $postArray = $profileUser->posts;
-            $numberPosts = sizeof($profileUser->posts);
-
+            $userPageView = array();
+            $profileUser = $this->user->getDisplayUser();
+            $userPageView["profileUser"] = $profileUser;
+            $userPageView["numberPosts"] = sizeof($profileUser->posts);
             include_once("/html/userPage.html");
+
+            $postListView = array();
+            $postListView["postArray"] = $profileUser->posts;
             include_once("/html/postList.html");
         }
     }

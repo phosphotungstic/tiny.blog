@@ -5,27 +5,27 @@
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <body>
-    <h1><?= $profileUser->username ?>'s Profile</h1>
+    <h1><?= $userPageView["profileUser"]->username ?>'s Profile</h1>
     <div class="topright">
         <a href = "/main">tiny.blog</a>
-        <? if($this->isPageOwner()) { ?>
+        <? if($userPageView["profileUser"]->isPageOwner()) { ?>
             [<a href = "/main/user/action/post">post</a>]
             [<a href = "/main/user/action/settings">settings</a>]
         <? } ?>
 
-        <? if($this->isLoggedInAccess()) { ?>
+        <? if($this->isLoggedIn()) { ?>
             [<a href = "/main/user/action/logout">logout</a>]<br>
         <? } ?>
     </div>
 
     <div class="right">
         <p class="centered">
-            Number of posts: <?= $numberPosts ?><br>
+            Number of posts: <?= $userPageView["numberPosts"] ?><br>
         </p>
     </div>
 
     <div class="left listtitle">
-        <?= $profileUser->username; ?>'s posts:
+        <?= $userPageView["profileUser"]->username; ?>'s posts:
     </div>
 </body>
 </html>
